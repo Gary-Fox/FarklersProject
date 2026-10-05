@@ -32,6 +32,8 @@ import java.util.*;
 
 public class Main 
 {
+    //method: createWindow
+    //purpose: Initialize window size, title, and fullscreeness
     private void createWindow() throws Exception
     {
         //Creates a window with a title, and displays it.
@@ -40,6 +42,10 @@ public class Main
         Display.setTitle("A beeper perhaps | His father pure evil");
         Display.create();
     }
+    
+    //method: initGL
+    //purpose: Initializes background color, establishes coordinate positions relative to the window,
+    // and generally makes GL commands run as intended
     private void initGL()
     {
         glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
@@ -52,6 +58,9 @@ public class Main
         glMatrixMode(GL_MODELVIEW);
         glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
     }
+    
+    //method: render
+    //purpose: to draw out our graphics ((MAY CHANGE))
     private void render()
     {
         while(!Display.isCloseRequested())
@@ -87,6 +96,8 @@ public class Main
         }
     }
     
+    //method: start
+    //purpose: To iniitate all functions necessary for running our program
     public void start()
     {
         try
@@ -115,6 +126,8 @@ public class Main
     /**
      * @param args the command line arguments
      */
+    //method: main
+    //purpose: create a new instance of our Main class and run the start method
     public static void main(String[] args) 
     {
         Main basic = new Main();
