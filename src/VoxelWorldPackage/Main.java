@@ -1,3 +1,5 @@
+package VoxelWorldPackage;
+
 /***************************************************************
 * file: Main.java
 * authors: Isabeau Cantoran, Kian Naderi, Jacob Carrasco. (The Farklers)
@@ -19,19 +21,25 @@
  *
  * @author Fur4l
  */
-//package Main.pkg01;
 
-import org.lwjgl.opengl.Display;
-import org.lwjgl.opengl.DisplayMode;
-import static org.lwjgl.opengl.GL11.*;
+
+
 //import java.io.BufferedReader;
 //import java.io.FileReader;
 //import java.io.IOException;
-import org.lwjgl.input.Keyboard;
+import VoxelWorldPackage.FPCameraController;
 import java.util.*;
+import org.lwjgl.input.Keyboard;
+import org.lwjgl.opengl.Display;
+import org.lwjgl.opengl.DisplayMode;
+import static org.lwjgl.opengl.GL11.*;
+//import org.lwjgl.util.glu.GLU;
 
 public class Main 
 {
+    private FPCameraController fp = new FPCameraController(0f,0f,0f);
+    private DisplayMode displayMode;
+    
     //method: createWindow
     //purpose: Initialize window size, title, and fullscreeness
     private void createWindow() throws Exception
@@ -100,15 +108,12 @@ public class Main
     //purpose: To iniitate all functions necessary for running our program
     public void start()
     {
-        try
+        try 
         {
             createWindow();
             initGL();
-            render();
-        }catch(Exception e)
-        {
-            e.printStackTrace();
-        }
+            fp.gameLoop();//render();
+        }catch (Exception e) { e.printStackTrace();}
     }
 
     //method: readInput
@@ -130,9 +135,9 @@ public class Main
     //purpose: create a new instance of our Main class and run the start method
     public static void main(String[] args) 
     {
+
         Main basic = new Main();
         basic.start();
     }
-    
+   
 }
-
