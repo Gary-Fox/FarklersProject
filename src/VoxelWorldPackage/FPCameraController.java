@@ -8,7 +8,8 @@ package VoxelWorldPackage;
 * assignment: Check Point 1
 * date last modified: 10/17/2026
 *
-* purpose: Camera controller
+* purpose: Provide camera control to the user, along with the render() method that displays to the screen.
+* It not only handles the mechanical shifting of the pitch and yaw, but also handles keyboard inputs
 *
 ****************************************************************
 /*
@@ -41,6 +42,8 @@ public class FPCameraController
     private float pitch = 0.0f;
     private Vector3Float me;
     
+    //Method: FPCameraController
+    //Purpose: Initializes a camera position within 3D world coordinates
     public FPCameraController(float x, float y, float z)
     {
         //instantiate position Vector3f to the x y z params.
@@ -51,31 +54,36 @@ public class FPCameraController
         lPosition.z = 0f;
     }
     
-    //increment the camera's current yaw rotation
+    //Method: yaw
+    //Purpose: Increment the camera's current yaw rotation by a spesific amount
     public void yaw(float amount)
     {
         //increment the yaw by the amount param
         yaw += amount;
     }
-    //increment the camera's current pitch rotation
+    //Method: pitch
+    //Purpose: Increment the pitch by a spesific amount
     public void pitch(float amount)
     {
         //increment the pitch by the amount param
         pitch -= amount;
     }
     
-     //moves the camera up relative to its current rotation (yaw)
+    //Method: moveUp
+    //Purpose: Moves the camera up relative to it's yaw
     public void moveUp(float distance)
     {
     position.y -= distance;
     }
-    //moves the camera down
+    //Method: moveDown
+    //Purpose: Moves the camera down relative to its yaw
     public void moveDown(float distance)
     {
     position.y += distance;
     }
     
-    //moves the camera forward relative to its current rotation (yaw)
+    //Method: walkForward
+    //Purpose: moves the camera forward relative to its current yaw
     public void walkForward(float distance)
     {
         float xOffset = distance * (float)Math.sin(Math.toRadians(yaw));
@@ -84,7 +92,8 @@ public class FPCameraController
         position.z += zOffset;
     }
     
-    //moves the camera backward relative to its current rotation (yaw)
+    //Method: walkBackwards
+    //Purpose: moves the camera backward relative to its current yaw
     public void walkBackwards(float distance)
     {
         float xOffset = distance * (float)Math.sin(Math.toRadians(yaw));
@@ -93,7 +102,8 @@ public class FPCameraController
         position.z -= zOffset;
     }
     
-    //strafes the camera left relative to its current rotation(yaw)
+    //Method: strafeLeft
+    //Purpose: strafes the camera left relative to its current rotation
     public void strafeLeft(float distance) 
     {        
         float xOffset = distance * (float) Math.sin(Math.toRadians(yaw - 90));
@@ -102,7 +112,8 @@ public class FPCameraController
         position.z += zOffset;
     }
     
-    //strafes the camera right relative to its current rotation (yaw)
+    //Method: strafeRight
+    //Purpose: strafes the camera right relative to its current yaw
     public void strafeRight(float distance)
     {
         float xOffset = distance * (float)Math.sin(Math.toRadians(yaw+90));
@@ -111,7 +122,8 @@ public class FPCameraController
         position.z += zOffset;
     }
     
-    //translates and rotate the matrix so that it looks through the camera
+    //Method: lookThrough
+    //Purpose: translates and rotate the matrix so that it looks through the camera
     //this does basically what gluLookAt() does
     public void lookThrough()
     {
@@ -122,6 +134,9 @@ public class FPCameraController
         //translate to the position vector's location
         glTranslatef(position.x, position.y, position.z);
     }
+    
+    //Method: gameLoop
+    //Purpose: loops until the program is closed, handle all keybaord inputs and translate them into movement in world space.
     public void gameLoop()
     {
         FPCameraController camera = new FPCameraController(0, 0, 0);
@@ -189,6 +204,9 @@ public class FPCameraController
             Display.destroy();
         
     }
+    
+    //Method: Render
+    //Purpose: Draw out graphics into world space, creating the world for exploration
     private void render() 
     {
         try

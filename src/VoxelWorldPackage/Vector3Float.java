@@ -8,7 +8,7 @@ package VoxelWorldPackage;
 * assignment: Check Point 1
 * date last modified: 10/17/2026
 *
-* purpose: 
+* purpose: A class used to hold three float values, correlating to x, y, and z coordinates. 
 *
 ****************************************************************
 /*

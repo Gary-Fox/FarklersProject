@@ -6,7 +6,7 @@ package VoxelWorldPackage;
 * class: CS 4450.01 - Computer Graphics
 *
 * assignment: Check Point 1
-* date last modified: 10/4/2026
+* date last modified: 10/17/2026
 *
 * purpose: This program will be capable of creating a camera within 3 dimensional space, along with
 * rudimentary movement in world coordinates. Part i of a 3D voxel game world project.
