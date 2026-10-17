@@ -33,20 +33,29 @@ import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 import static org.lwjgl.opengl.GL11.*;
+import org.lwjgl.util.glu.GLU;
 //import org.lwjgl.util.glu.GLU;
 
 public class Main 
 {
-    private FPCameraController fp = new FPCameraController(0f,0f,0f);
+    private final FPCameraController fp = new FPCameraController(0f,0f,0f);
     private DisplayMode displayMode;
     
     //method: createWindow
     //purpose: Initialize window size, title, and fullscreeness
     private void createWindow() throws Exception
     {
-        //Creates a window with a title, and displays it.
+        //Creating a window.
         Display.setFullscreen(false);
-        Display.setDisplayMode(new DisplayMode(640,480));
+        //I believe this dynamically setting the window size for each frame?
+        DisplayMode d[] = Display.getAvailableDisplayModes();
+        for(int i = 0; i<d.length; i++)
+        {
+            if(d[i].getWidth() == 640 && d[i].getHeight() == 480
+                && d[i].getBitsPerPixel() == 32)
+            {displayMode = d[i]; break;}
+        }
+        Display.setDisplayMode(displayMode);
         Display.setTitle("A beeper perhaps | His father pure evil");
         Display.create();
     }
@@ -61,47 +70,13 @@ public class Main
         glMatrixMode(GL_PROJECTION);
         glLoadIdentity();
         
-        //glOrtho(0, 640, 0, 480, 1, -1);
-        glOrtho(-320, 320, -240, 240, 1, -1);
+        GLU.gluPerspective(
+                100.0f,
+                (float)displayMode.getWidth() / (float) displayMode.getHeight(), 
+                0.1f, 
+                300.0f);
         glMatrixMode(GL_MODELVIEW);
         glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
-    }
-    
-    //method: render
-    //purpose: to draw out our graphics ((MAY CHANGE))
-    private void render()
-    {
-        while(!Display.isCloseRequested())
-        {
-            try
-            {
-                readInput();
-                glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-                glLoadIdentity();
-                
-                glColor3f(1.0f,1.0f,0.0f);
-                glPointSize(10);
-                
-                glBegin(GL_POINTS);
-                glVertex2f(200.0f, 150.0f);
-                glVertex2f(-50.0f, -50.0f);
-                
-                glEnd();
-                
-                glBegin(GL_LINE_STRIP);
-                glVertex2f(50.0f, -150.0f);
-                glVertex2f(150.0f, 300.0f);
-                glEnd();
-
-                //If it flickers, you did this more than once
-                Display.update();
-                    Display.sync(60);
-                        
-            }catch(Exception e)
-            {
-                Display.destroy();
-            }
-        }
     }
     
     //method: start
@@ -112,20 +87,8 @@ public class Main
         {
             createWindow();
             initGL();
-            fp.gameLoop();//render();
+            fp.gameLoop();//render() and //userInput();
         }catch (Exception e) { e.printStackTrace();}
-    }
-
-    //method: readInput
-    //purpose: checks for keybaord inputs
-    // press he escape key to quit the program
-    // Use WASD for camera control
-    public void readInput()
-    {
-        if (Keyboard.isKeyDown(Keyboard.KEY_ESCAPE))
-        {
-            Display.destroy();
-        }
     }
     
     /**
@@ -139,5 +102,7 @@ public class Main
         Main basic = new Main();
         basic.start();
     }
+    
+    
    
 }
