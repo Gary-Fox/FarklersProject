@@ -55,6 +55,11 @@ public class Main
                 && d[i].getBitsPerPixel() == 32)
             {displayMode = d[i]; break;}
         }
+        if (displayMode == null) {
+            displayMode = Display.getDesktopDisplayMode();
+        }
+        Display.setDisplayMode(displayMode);
+        
         Display.setDisplayMode(displayMode);
         Display.setTitle("A beeper perhaps | His father pure evil");
         Display.create();
