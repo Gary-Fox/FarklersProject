@@ -6,7 +6,7 @@ package VoxelWorldPackage;
 * class: CS 4450.01 - Computer Graphics
 *
 * assignment: Check Point 1
-* date last modified: 10/17/2026
+* date last modified: 10/22/2026
 *
 * purpose: Provide camera control to the user, along with the render() method that displays to the screen.
 * It not only handles the mechanical shifting of the pitch and yaw, but also handles keyboard inputs
@@ -41,6 +41,8 @@ public class FPCameraController
     //the rotation around the X axis of the camera
     private float pitch = 0.0f;
     private Vector3Float me;
+    
+    private Chunk testChunk;
     
     //Method: FPCameraController
     //Purpose: Initializes a camera position within 3D world coordinates
@@ -150,6 +152,8 @@ public class FPCameraController
         //hide the mouse
         Mouse.setGrabbed(true);
         
+        testChunk = new Chunk(0, 0, 0);
+        
         while (!Display.isCloseRequested() &&
         !Keyboard.isKeyDown(Keyboard.KEY_ESCAPE))
         {
@@ -211,8 +215,7 @@ public class FPCameraController
     {
         try
         {
-            
-            
+            testChunk.render();
         }catch(Exception e){e.printStackTrace();}
     }
 }
