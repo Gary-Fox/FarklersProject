@@ -38,7 +38,8 @@ import org.lwjgl.util.glu.GLU;
 
 public class Main 
 {
-    private final FPCameraController fp = new FPCameraController(0f,0f,0f);
+    // changed to -5 for z to start the camera back from the block
+    private final FPCameraController fp = new FPCameraController(0f, 0f, -5f);
     private DisplayMode displayMode;
     
     //method: createWindow
@@ -49,7 +50,8 @@ public class Main
         Display.setFullscreen(false);
         //I believe this dynamically setting the window size for each frame?
         DisplayMode d[] = Display.getAvailableDisplayModes();
-        for(int i = 0; i<d.length; i++)
+        
+        for (int i = 0; i<d.length; i++)
         {
             if(d[i].getWidth() == 640 && d[i].getHeight() == 480
                 && d[i].getBitsPerPixel() == 32)
@@ -58,8 +60,6 @@ public class Main
         if (displayMode == null) {
             displayMode = Display.getDesktopDisplayMode();
         }
-        Display.setDisplayMode(displayMode);
-        
         Display.setDisplayMode(displayMode);
         Display.setTitle("A beeper perhaps | His father pure evil");
         Display.create();
@@ -85,7 +85,13 @@ public class Main
     
         glEnableClientState(GL_VERTEX_ARRAY);
         glEnableClientState(GL_COLOR_ARRAY);
+        glEnableClientState(GL_TEXTURE_COORD_ARRAY);
         glEnable(GL_DEPTH_TEST);
+        glEnable(GL_TEXTURE_2D);
+        // back-face culling so that overlapping blocks don't begin z-fighting
+        glEnable(GL_CULL_FACE);
+        // tells gl that front faces of blocks are wound clockwise, so outward facing sides are kept and cull the inner ones with no flicker between neighbors
+        glFrontFace(GL_CW);
     }
     
     //method: start
@@ -111,7 +117,4 @@ public class Main
         Main basic = new Main();
         basic.start();
     }
-    
-    
-   
 }
