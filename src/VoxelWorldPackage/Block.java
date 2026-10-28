@@ -3,8 +3,8 @@
 * authors: Isabeau Cantoran, Kian Naderi, Jacob Carrasco. (The Farklers)
 * class: CS 4450.01 - Computer Graphics
 *
-* assignment: Check Point 1
-* date last modified: 10/22/2026
+* assignment: Check Point 2
+* date last modified: 10/27/2026
 *
 * purpose: A container class for data of a given Block used to build a Chunk in Chunk.java.
 *
