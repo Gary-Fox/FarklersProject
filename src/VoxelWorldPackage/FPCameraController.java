@@ -5,8 +5,8 @@ package VoxelWorldPackage;
 * authors: Isabeau Cantoran, Kian Naderi, Jacob Carrasco. (The Farklers)
 * class: CS 4450.01 - Computer Graphics
 *
-* assignment: Check Point 1
-* date last modified: 10/22/2026
+* assignment: Check Point 2
+* date last modified: 10/27/2026
 *
 * purpose: Provide camera control to the user, along with the render() method that displays to the screen.
 * It not only handles the mechanical shifting of the pitch and yaw, but also handles keyboard inputs
@@ -141,7 +141,8 @@ public class FPCameraController
     //Purpose: loops until the program is closed, handle all keybaord inputs and translate them into movement in world space.
     public void gameLoop()
     {
-        FPCameraController camera = new FPCameraController(0, 0, 0);
+        //FPCameraController camera = new FPCameraController(0, 0, -5);
+        // theres already a camera in main except its called fp, having camera in here makes a second one
         float dx = 0.0f;
         float dy = 0.0f;
         float dt = 0.0f; //length of frame
@@ -165,6 +166,9 @@ public class FPCameraController
             //distance in mouse movement
             //from the last getDY() call.
             dy = Mouse.getDY();
+            
+            this.yaw(dx * mouseSensitivity);
+            this.pitch(dy * mouseSensitivity);
             //when passing in the distance to move
             //we times the movementSpeed with dt this is a time scale
             //so if its a slow frame u move more then a fast frame
@@ -172,32 +176,32 @@ public class FPCameraController
             //REPLACE WITH A SWITCH CASE??? Jeez
             if (Keyboard.isKeyDown(Keyboard.KEY_W))//move forward
             {
-                camera.walkForward(movementSpeed);
+                this.walkForward(movementSpeed);
             }
             if (Keyboard.isKeyDown(Keyboard.KEY_S))//move backwards
             {
-                camera.walkBackwards(movementSpeed);
+                this.walkBackwards(movementSpeed);
             }
             if (Keyboard.isKeyDown(Keyboard.KEY_A))//strafe left 
             {
-                camera.strafeLeft(movementSpeed);
+                this.strafeLeft(movementSpeed);
             }
             if (Keyboard.isKeyDown(Keyboard.KEY_D))//strafe right 
             {
-                camera.strafeRight(movementSpeed);
+                this.strafeRight(movementSpeed);
             }
             if (Keyboard.isKeyDown(Keyboard.KEY_SPACE))//move up 
             {
-                camera.moveUp(movementSpeed);
+                this.moveUp(movementSpeed);
             }
             if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) 
             {
-                camera.moveDown(movementSpeed);
+                this.moveDown(movementSpeed);
             }
             //set the modelview matrix back to the identity
             glLoadIdentity();
             //look through the camera before you draw anything
-            camera.lookThrough();
+            this.lookThrough();
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
             //you would draw your scene here.
             render();
