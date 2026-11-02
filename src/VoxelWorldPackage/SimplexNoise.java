@@ -10,6 +10,7 @@
 ****************************************************************
 */
 
+package VoxelWorldPackage;
 
 import java.util.Random;
 

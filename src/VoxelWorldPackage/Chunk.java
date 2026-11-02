@@ -75,7 +75,15 @@ public class Chunk {
     
     // Method: rebuildMesh
     // Purpose: fills the buffer with the Block data
-    public void rebuildMesh(float startX, float startY, float startZ) {
+    public void rebuildMesh(float startX, float startY, float startZ) 
+    {
+        //adding noise
+        Random r = new Random();
+        SimplexNoise noise = new SimplexNoise(10, 1, r.nextInt());
+
+        //Replace r.nextInt() with x, y, z???
+
+        
         VBOColorHandle = glGenBuffers();
         VBOVertexHandle = glGenBuffers();
         VBOTextureHandle = glGenBuffers();
@@ -85,17 +93,39 @@ public class Chunk {
         // Important if we change base.png
         FloatBuffer VertexTextureData = BufferUtils.createFloatBuffer((CHUNK_SIZE * CHUNK_SIZE * CHUNK_SIZE) * 6 * 12);
                 
-        for (float x = 0; x < CHUNK_SIZE; x += 1) {
-            for (float z = 0; z < CHUNK_SIZE; z += 1) {
-                for(float y = 0; y < CHUNK_SIZE; y++){
-                VertexPositionData.put(createCube((float) (startX + x * CUBE_LENGTH), (float)(y * CUBE_LENGTH + (int)(CHUNK_SIZE*.8)), (float) (startZ + z * CUBE_LENGTH)));
-                // Inside rebuildMesh loops:
-                VertexColorData.put(createCubeVertexCol(getCubeColor(Blocks[(int) x][(int) y][(int) z])));
-                
-                VertexTextureData.put(createTexCube((float) 0, (float) 0, Blocks[(int)(x)][(int)(y)][(int)(z)]));
+        for (float x = 0; x < CHUNK_SIZE; x += 1)
+        {
+
+
+            for (float z = 0; z < CHUNK_SIZE; z += 1) 
+            {
+                float maxHeight = Math.abs(((startY + (int)(100*noise.getNoise((int)x, 1, 1) * CUBE_LENGTH)) % 10) + 1);
+                System.out.println("maxHeight: " + maxHeight);
+
+                for(float y = 0; y < maxHeight; y++)
+                {
+                    //Trying my darndest to make the top blocks grass.
+                    if( (y + 1) > maxHeight )
+                    {
+                        Blocks[(int)(x)][(int)(y)][(int)(z)].setID(0);
+                    }
+                        VertexPositionData.put(createCube((float) (startX + x * CUBE_LENGTH), (float)(y * CUBE_LENGTH + (int)(CHUNK_SIZE*.8)), (float) (startZ + z * CUBE_LENGTH)));
+                        // Inside rebuildMesh loops:
+                        VertexColorData.put(createCubeVertexCol(getCubeColor(Blocks[(int) x][(int) y][(int) z])));
+                        VertexTextureData.put(createTexCube((float) 0, (float) 0, Blocks[(int)(x)][(int)(y)][(int)(z)]));
+
                 }
             }
         }
+        
+//        for(float y = 0; y<=max; y++)
+//        {
+//            VertexPositionData.put(
+//            createCube((float) (startX + x * CUBE_LENGTH),
+//            (float) (y*CUBE_LENGTH+(int)(CHUNK_SIZE*.8)),
+//            (float) (startZ + z * CUBE_LENGTH))
+//        }
+        
         VertexColorData.flip();
         VertexPositionData.flip();
         VertexTextureData.flip();
@@ -408,7 +438,9 @@ public class Chunk {
         }
     }
     
-    public Chunk(int startX, int startY, int startZ) {
+    public Chunk(int startX, int startY, int startZ) 
+    {
+        //height = (startY + (int)(100*noise.getNoise(i,j,k)) * CUBE_LENGTH);
         // This is how we find the sprite file in our directory
         try{texture = TextureLoader.getTexture("PNG", ResourceLoader.getResourceAsStream("VoxelWorldPackage/terrain.png"), GL_NEAREST);
         }

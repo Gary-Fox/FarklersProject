@@ -81,4 +81,9 @@ public class Block {
     public int getID() {
         return Type.GetID();
     }
+    
+    public void setID(int i)
+    {
+        Type.SetID(i); 
+    }
 }
