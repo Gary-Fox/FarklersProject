@@ -79,7 +79,9 @@ public class Chunk {
     {
         //adding noise
         Random r = new Random();
-        SimplexNoise noise = new SimplexNoise(10, 1, r.nextInt());
+        //0.05 persistence adds some naturalness
+        //0.03 allows for mostly flat land with some minor hills
+        SimplexNoise noise = new SimplexNoise(10, 0.03, r.nextInt());
 
         //Replace r.nextInt() with x, y, z???
 
@@ -101,7 +103,10 @@ public class Chunk {
             {
                 float maxHeight = Math.abs(((startY + (int)(100*noise.getNoise((int)x, 1, 1) * CUBE_LENGTH)) % 10) + 1);
                 System.out.println("maxHeight: " + maxHeight);
-
+                if(maxHeight <= 0)
+                {
+                    maxHeight = 1;
+                }
                 for(float y = 0; y < maxHeight; y++)
                 {
                     //Trying my darndest to make the top blocks grass.
