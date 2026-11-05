@@ -4,7 +4,7 @@
 * class: CS 4450.01 - Computer Graphics
 *
 * assignment: Check Point 2
-* date last modified: 10/28/2026
+* date last modified: 11/4/2026
 *
 * purpose: The full-blown SimplexNoise generator based on a seed/input.
 *

@@ -6,7 +6,7 @@ package VoxelWorldPackage;
 * class: CS 4450.01 - Computer Graphics
 *
 * assignment: Check Point 2
-* date last modified: 10/27/2026
+* date last modified: 11/4/2026
 *
 * purpose: Provide camera control to the user, along with the render() method that displays to the screen.
 * It not only handles the mechanical shifting of the pitch and yaw, but also handles keyboard inputs
