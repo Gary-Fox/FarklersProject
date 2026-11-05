@@ -6,7 +6,7 @@ package VoxelWorldPackage;
 * class: CS 4450.01 - Computer Graphics
 *
 * assignment: Check Point 1
-* date last modified: 10/17/2026
+* date last modified: 11/5/2026
 *
 * purpose: This program will be capable of creating a camera within 3 dimensional space, along with
 * rudimentary movement in world coordinates. Part i of a 3D voxel game world project.
@@ -39,7 +39,7 @@ import org.lwjgl.util.glu.GLU;
 public class Main 
 {
     // changed to -5 for z to start the camera back from the block
-    private final FPCameraController fp = new FPCameraController(0f, 0f, -5f);
+    private final FPCameraController fp = new FPCameraController(0f, -50f, -5f);
     private DisplayMode displayMode;
     
     //method: createWindow

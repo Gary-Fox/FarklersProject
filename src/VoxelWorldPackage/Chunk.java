@@ -4,7 +4,7 @@
 * class: CS 4450.01 - Computer Graphics
 *
 * assignment: Check Point 2
-* date last modified: 11/4/2026
+* date last modified: 11/5/2026
 *
 * purpose: Builds a Chunk object out of Blocks by inserting the geometry data into the GLBuffer,
 * including position and color. 
@@ -43,8 +43,9 @@ public class Chunk {
     // Terrain settings (tweak these to change the look)
     private static final int SEA_LEVEL = CHUNK_SIZE / 3;
     private static final int SEED = 1234;   // fixed seed = same world every run
-    private int blockCount = 0;             // number of blocks actually drawn
+    private int blockCount = 0; // number of blocks actually drawn
     
+
     // Method: render
     // Purpose: renders the data in the buffer to the screen
     public void render() {
@@ -470,14 +471,13 @@ public class Chunk {
     // Method: generateTerrain
     // Purpose: fills Blocks with a layered heightmap from two simplex noises,
     // small rolling hills plus rare large mountains, like Minecraft
-    private void generateTerrain() {
-         Random r = new Random();
-         int tempSeed = r.nextInt();
+    private void generateTerrain(int seed) {
+ 
         // Low persistence = smooth hills; larger feature size = wider shapes
         // REPLACE tempSeed with SEED when finishing.
         // Chunks are generated on random numbers for the sake of showing it's capabilities
-        SimplexNoise hills = new SimplexNoise(48, 0.35, tempSeed);
-        SimplexNoise mountains = new SimplexNoise(128, 0.5, tempSeed + 1);
+        SimplexNoise hills = new SimplexNoise(48, 0.35, seed);
+        SimplexNoise mountains = new SimplexNoise(128, 0.5, seed + 1);
         
         Blocks = new Block[CHUNK_SIZE][CHUNK_SIZE][CHUNK_SIZE];
         
@@ -522,8 +522,9 @@ public class Chunk {
         }
     }
     
-    public Chunk(int startX, int startY, int startZ) 
+    public Chunk(int startX, int startY, int startZ, int seed) 
     {
+
         //height = (startY + (int)(100*noise.getNoise(i,j,k)) * CUBE_LENGTH);
         // This is how we find the sprite file in our directory
         try {
@@ -533,18 +534,7 @@ public class Chunk {
             e.printStackTrace();
         }
         
-//        Random r = new Random();
-//        Block.BlockType[] types = Block.BlockType.values();
-//        
-//        Blocks = new Block[CHUNK_SIZE][CHUNK_SIZE][CHUNK_SIZE];
-//        for (int x = 0; x < CHUNK_SIZE; x++) {
-//            for (int y = 0; y < CHUNK_SIZE; y++) {
-//                for (int z = 0; z < CHUNK_SIZE; z++) {
-//                    //Blocks[x][y][z] = new Block(Block.BlockType.BlockType_Grass);
-//                    Blocks[x][y][z] = new Block(types[r.nextInt(types.length - 1)]); // - 1 to make sure debug blocks don't generate 
-//                }
-//            }
-//        }
+        
         
         // Initialize handles exactly once here
         VBOColorHandle = glGenBuffers();
@@ -555,7 +545,7 @@ public class Chunk {
         StartY = startY;
         StartZ = startZ;
         
-        generateTerrain();
+        generateTerrain(seed);
         rebuildMesh(startX, startY, startZ);
 
     }

@@ -6,7 +6,7 @@ package VoxelWorldPackage;
 * class: CS 4450.01 - Computer Graphics
 *
 * assignment: Check Point 2
-* date last modified: 11/4/2026
+* date last modified: 11/5/2026
 *
 * purpose: Provide camera control to the user, along with the render() method that displays to the screen.
 * It not only handles the mechanical shifting of the pitch and yaw, but also handles keyboard inputs
@@ -29,6 +29,7 @@ import org.lwjgl.Sys;
 
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Random;
 
 /**
  *
@@ -47,6 +48,9 @@ public class FPCameraController
     
     private Chunk testChunk;
     List<Chunk> listOfChunks = new ArrayList<>();
+    
+    private Random r = new Random();
+    private int randomSeed = r.nextInt();
     
     //Method: FPCameraController
     //Purpose: Initializes a camera position within 3D world coordinates
@@ -158,19 +162,19 @@ public class FPCameraController
         Mouse.setGrabbed(true);
         
         
-        testChunk = new Chunk(0, 0, 0);
+        testChunk = new Chunk(0, 0, 0, randomSeed);
 
         listOfChunks.add(testChunk);
         //Adding more chunks to showcase randomization
         //listOfChunks.add(new Chunk(0 + (testChunk.CHUNK_SIZE * 2), 0 + (testChunk.CHUNK_SIZE * 2), 0 + (2 * testChunk.CHUNK_SIZE)));
-        listOfChunks.add(new Chunk(0 + testChunk.CHUNK_SIZE * 2, 0, 0 + testChunk.CHUNK_SIZE * 2));
-        listOfChunks.add(new Chunk(0 - testChunk.CHUNK_SIZE * 2, 0, 0 - testChunk.CHUNK_SIZE * 2));
-        listOfChunks.add(new Chunk(0 + testChunk.CHUNK_SIZE * 2, 0, 0 - testChunk.CHUNK_SIZE * 2));
-        listOfChunks.add(new Chunk(0 - testChunk.CHUNK_SIZE * 2, 0, 0 + testChunk.CHUNK_SIZE * 2));
-        listOfChunks.add(new Chunk(0, 0, 0 + testChunk.CHUNK_SIZE * 2));
-        listOfChunks.add(new Chunk(0, 0, 0 - testChunk.CHUNK_SIZE * 2));
-        listOfChunks.add(new Chunk(0 + testChunk.CHUNK_SIZE * 2, 0, 0));
-        listOfChunks.add(new Chunk(0 - testChunk.CHUNK_SIZE * 2, 0, 0));
+        listOfChunks.add(new Chunk(0 + testChunk.CHUNK_SIZE * 2, 0, 0 + testChunk.CHUNK_SIZE * 2, randomSeed));
+        listOfChunks.add(new Chunk(0 - testChunk.CHUNK_SIZE * 2, 0, 0 - testChunk.CHUNK_SIZE * 2, randomSeed));
+        listOfChunks.add(new Chunk(0 + testChunk.CHUNK_SIZE * 2, 0, 0 - testChunk.CHUNK_SIZE * 2, randomSeed));
+        listOfChunks.add(new Chunk(0 - testChunk.CHUNK_SIZE * 2, 0, 0 + testChunk.CHUNK_SIZE * 2, randomSeed));
+        listOfChunks.add(new Chunk(0, 0, 0 + testChunk.CHUNK_SIZE * 2, randomSeed));
+        listOfChunks.add(new Chunk(0, 0, 0 - testChunk.CHUNK_SIZE * 2, randomSeed));
+        listOfChunks.add(new Chunk(0 + testChunk.CHUNK_SIZE * 2, 0, 0, randomSeed));
+        listOfChunks.add(new Chunk(0 - testChunk.CHUNK_SIZE * 2, 0, 0, randomSeed));
         
         
         while (!Display.isCloseRequested() &&
