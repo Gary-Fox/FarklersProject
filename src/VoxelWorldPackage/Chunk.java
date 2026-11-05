@@ -29,7 +29,7 @@ import org.newdawn.slick.opengl.TextureLoader;
 import org.newdawn.slick.util.ResourceLoader;
 
 public class Chunk {
-    static final int CHUNK_SIZE = 10;
+    static final int CHUNK_SIZE = 30;
     static final int CUBE_LENGTH = 2;
     private Block[][][] Blocks;
     
@@ -39,6 +39,11 @@ public class Chunk {
     
     private int VBOTextureHandle;
     private Texture texture;
+    
+    // Terrain settings (tweak these to change the look)
+    private static final int SEA_LEVEL = CHUNK_SIZE / 3;
+    private static final int SEED = 1234;   // fixed seed = same world every run
+    private int blockCount = 0;             // number of blocks actually drawn
     
     // Method: render
     // Purpose: renders the data in the buffer to the screen
@@ -63,7 +68,7 @@ public class Chunk {
         glTexCoordPointer(2, GL_FLOAT,0,0L);
 
         // Draw the quads
-        glDrawArrays(GL_QUADS, 0, CHUNK_SIZE * CHUNK_SIZE * CHUNK_SIZE * 24);
+        glDrawArrays(GL_QUADS, 0, blockCount * 24);
 
         // Disable client states to keep OpenGL state clean
         glDisableClientState(GL_COLOR_ARRAY);
@@ -77,51 +82,70 @@ public class Chunk {
     // Purpose: fills the buffer with the Block data
     public void rebuildMesh(float startX, float startY, float startZ) 
     {
-        //adding noise
-        Random r = new Random();
-        //0.05 persistence adds some naturalness
-        //0.03 allows for mostly flat land with some minor hills
-        SimplexNoise noise = new SimplexNoise(10, 0.03, r.nextInt());
-
-        //Replace r.nextInt() with x, y, z???
-
-        
-        VBOColorHandle = glGenBuffers();
-        VBOVertexHandle = glGenBuffers();
-        VBOTextureHandle = glGenBuffers();
+//        //adding noise
+//        Random r = new Random();
+//        //0.05 persistence adds some naturalness
+//        //0.03 allows for mostly flat land with some minor hills
+//        SimplexNoise noise = new SimplexNoise(10, 0.03, r.nextInt());
+//
+//        //Replace r.nextInt() with x, y, z???
+//
+//        
+//        VBOColorHandle = glGenBuffers();
+//        VBOVertexHandle = glGenBuffers();
+//        VBOTextureHandle = glGenBuffers();
         FloatBuffer VertexPositionData = BufferUtils.createFloatBuffer((CHUNK_SIZE * CHUNK_SIZE * CHUNK_SIZE) * 6 * 12);
         FloatBuffer VertexColorData = BufferUtils.createFloatBuffer((CHUNK_SIZE* CHUNK_SIZE * CHUNK_SIZE) * 6 * 12);
         
         // Important if we change base.png
         FloatBuffer VertexTextureData = BufferUtils.createFloatBuffer((CHUNK_SIZE * CHUNK_SIZE * CHUNK_SIZE) * 6 * 12);
-                
-        for (float x = 0; x < CHUNK_SIZE; x += 1)
-        {
-
-
-            for (float z = 0; z < CHUNK_SIZE; z += 1) 
-            {
-                float maxHeight = Math.abs(((startY + (int)(100*noise.getNoise((int)x, 1, 1) * CUBE_LENGTH)) % 10) + 1);
-                System.out.println("maxHeight: " + maxHeight);
-                if(maxHeight <= 0)
-                {
-                    maxHeight = 1;
-                }
-                for(float y = 0; y < maxHeight; y++)
-                {
-                    //Trying my darndest to make the top blocks grass.
-                    if( (y + 1) > maxHeight )
-                    {
-                        Blocks[(int)(x)][(int)(y)][(int)(z)].setID(0);
-                    }
-                        VertexPositionData.put(createCube((float) (startX + x * CUBE_LENGTH), (float)(y * CUBE_LENGTH + (int)(CHUNK_SIZE*.8)), (float) (startZ + z * CUBE_LENGTH)));
-                        // Inside rebuildMesh loops:
-                        VertexColorData.put(createCubeVertexCol(getCubeColor(Blocks[(int) x][(int) y][(int) z])));
-                        VertexTextureData.put(createTexCube((float) 0, (float) 0, Blocks[(int)(x)][(int)(y)][(int)(z)]));
-
+        
+        blockCount = 0;
+        
+        for (int x = 0; x < CHUNK_SIZE; x++) {
+            for (int z = 0; z < CHUNK_SIZE; z++) {
+                for (int y = 0; y < CHUNK_SIZE; y++) {
+                    Block b = Blocks[x][y][z];
+                    if (b == null) continue;    // air: nothing to draw
+                    
+                    VertexPositionData.put(createCube(
+                            startX + x * CUBE_LENGTH,
+                            y * CUBE_LENGTH + (int) (CHUNK_SIZE * .8),
+                            startZ + z * CUBE_LENGTH));
+                    VertexColorData.put(createCubeVertexCol(getCubeColor(b)));
+                    VertexTextureData.put(createTexCube(0f, 0f, b));
+                    blockCount++;
                 }
             }
         }
+        
+//        for (float x = 0; x < CHUNK_SIZE; x += 1)
+//        {
+//
+//
+//            for (float z = 0; z < CHUNK_SIZE; z += 1) 
+//            {
+//                float maxHeight = Math.abs(((startY + (int)(100*noise.getNoise((int)x, 1, 1) * CUBE_LENGTH)) % 10) + 1);
+//                System.out.println("maxHeight: " + maxHeight);
+//                if(maxHeight <= 0)
+//                {
+//                    maxHeight = 1;
+//                }
+//                for(float y = 0; y < maxHeight; y++)
+//                {
+//                    //Trying my darndest to make the top blocks grass.
+//                    if( (y + 1) > maxHeight )
+//                    {
+//                        Blocks[(int)(x)][(int)(y)][(int)(z)].setID(0);
+//                    }
+//                        VertexPositionData.put(createCube((float) (startX + x * CUBE_LENGTH), (float)(y * CUBE_LENGTH + (int)(CHUNK_SIZE*.8)), (float) (startZ + z * CUBE_LENGTH)));
+//                        // Inside rebuildMesh loops:
+//                        VertexColorData.put(createCubeVertexCol(getCubeColor(Blocks[(int) x][(int) y][(int) z])));
+//                        VertexTextureData.put(createTexCube((float) 0, (float) 0, Blocks[(int)(x)][(int)(y)][(int)(z)]));
+//
+//                }
+//            }
+//        }
         
 //        for(float y = 0; y<=max; y++)
 //        {
@@ -138,14 +162,14 @@ public class Chunk {
         glBindBuffer(GL_ARRAY_BUFFER, VBOVertexHandle);
         glBufferData(GL_ARRAY_BUFFER, VertexPositionData, GL_STATIC_DRAW);
     
-        glBindBuffer(GL_ARRAY_BUFFER, 0);
+        //glBindBuffer(GL_ARRAY_BUFFER, 0);
         glBindBuffer(GL_ARRAY_BUFFER, VBOColorHandle);
         glBufferData(GL_ARRAY_BUFFER, VertexColorData, GL_STATIC_DRAW); 
-        glBindBuffer(GL_ARRAY_BUFFER, 0);
+        //glBindBuffer(GL_ARRAY_BUFFER, 0);
         
         glBindBuffer(GL_ARRAY_BUFFER, VBOTextureHandle);
         glBufferData(GL_ARRAY_BUFFER, VertexTextureData, GL_STATIC_DRAW);
-        glBindBuffer(GL_ARRAY_BUFFER, 0);
+        //glBindBuffer(GL_ARRAY_BUFFER, 0);
     }
     
     // Method: createCubeVertexCol
@@ -443,29 +467,80 @@ public class Chunk {
         }
     }
     
+    // Method: generateTerrain
+    // Purpose: fills Blocks with a layered heightmap from two simplex noises,
+    // small rolling hills plus rare large mountains, like Minecraft
+    private void generateTerrain() {
+        // Low persistence = smooth hills; larger feature size = wider shapes
+        SimplexNoise hills = new SimplexNoise(48, 0.35, SEED);
+        SimplexNoise mountains = new SimplexNoise(128, 0.5, SEED + 1);
+        
+        Blocks = new Block[CHUNK_SIZE][CHUNK_SIZE][CHUNK_SIZE];
+        
+        for (int x = 0; x < CHUNK_SIZE; x++) {
+            for (int z = 0; z < CHUNK_SIZE; z++) {
+                // World block coordinates, so neighboring chunks would line up
+                int wx = StartX / CUBE_LENGTH + x;
+                int wz = StartZ / CUBE_LENGTH + z;
+                
+                // 2D noise per column: uses BOTH x and z
+                double base = hills.getNoise(wx, wz);               // about -1 to 1
+                double m = (mountains.getNoise(wx, wz) + 1) / 2;    // 0 to 1
+                m = m * m * m;                                      // cubing makes mountains rare
+                
+                int height = (int) (SEA_LEVEL + base * 4 + m * (CHUNK_SIZE - SEA_LEVEL - 2));
+                
+                height = Math.max(1, Math.min(CHUNK_SIZE - 1, height));
+                
+                // Fill the column in layers, bottom to top
+                for (int y = 0; y < CHUNK_SIZE; y++) {
+                    Block.BlockType type = null;    // null = air
+                    
+                    if (y == 0) {
+                        type = Block.BlockType.BlockType_Bedrock;
+                    } else if (y < height - 3) {
+                        type = Block.BlockType.BlockType_Stone;
+                    } else if (y < height) {
+                        type = Block.BlockType.BlockType_Dirt;
+                    } else if (y == height) {
+                        type = (height <= SEA_LEVEL + 1) 
+                                ? Block.BlockType.BlockType_Sand     // beaches
+                                : Block.BlockType.BlockType_Grass;
+                    } else if (y <= SEA_LEVEL) {
+                        type = Block.BlockType.BlockType_Water;     // lakes
+                    }
+                    
+                    if (type != null) {
+                        Blocks[x][y][z] = new Block(type);
+                    }
+                }
+            }
+        }
+    }
+    
     public Chunk(int startX, int startY, int startZ) 
     {
         //height = (startY + (int)(100*noise.getNoise(i,j,k)) * CUBE_LENGTH);
         // This is how we find the sprite file in our directory
-        try{texture = TextureLoader.getTexture("PNG", ResourceLoader.getResourceAsStream("VoxelWorldPackage/terrain.png"), GL_NEAREST);
-        }
-        catch(Exception e)
-        {
+        try {
+            texture = TextureLoader.getTexture("PNG", ResourceLoader.getResourceAsStream("VoxelWorldPackage/terrain.png"), GL_NEAREST);
+        } catch(Exception e) {
             System.out.print("ER-ROAR!");
+            e.printStackTrace();
         }
         
-        Random r = new Random();
-        Block.BlockType[] types = Block.BlockType.values();
-        
-        Blocks = new Block[CHUNK_SIZE][CHUNK_SIZE][CHUNK_SIZE];
-        for (int x = 0; x < CHUNK_SIZE; x++) {
-            for (int y = 0; y < CHUNK_SIZE; y++) {
-                for (int z = 0; z < CHUNK_SIZE; z++) {
-                    //Blocks[x][y][z] = new Block(Block.BlockType.BlockType_Grass);
-                    Blocks[x][y][z] = new Block(types[r.nextInt(types.length - 1)]); // - 1 to make sure debug blocks don't generate 
-                }
-            }
-        }
+//        Random r = new Random();
+//        Block.BlockType[] types = Block.BlockType.values();
+//        
+//        Blocks = new Block[CHUNK_SIZE][CHUNK_SIZE][CHUNK_SIZE];
+//        for (int x = 0; x < CHUNK_SIZE; x++) {
+//            for (int y = 0; y < CHUNK_SIZE; y++) {
+//                for (int z = 0; z < CHUNK_SIZE; z++) {
+//                    //Blocks[x][y][z] = new Block(Block.BlockType.BlockType_Grass);
+//                    Blocks[x][y][z] = new Block(types[r.nextInt(types.length - 1)]); // - 1 to make sure debug blocks don't generate 
+//                }
+//            }
+//        }
         
         // Initialize handles exactly once here
         VBOColorHandle = glGenBuffers();
@@ -475,6 +550,8 @@ public class Chunk {
         StartX = startX;
         StartY = startY;
         StartZ = startZ;
+        
+        generateTerrain();
         rebuildMesh(startX, startY, startZ);
     }
 }
