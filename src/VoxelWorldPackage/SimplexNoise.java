@@ -6,7 +6,7 @@
 * assignment: Check Point 2
 * date last modified: 10/28/2026
 *
-* purpose: 
+* purpose: Generate noise based on the SimplexNoise algorithm, imported from Canvas.
 ****************************************************************
 */
 

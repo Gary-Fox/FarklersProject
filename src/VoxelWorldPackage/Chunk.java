@@ -4,7 +4,7 @@
 * class: CS 4450.01 - Computer Graphics
 *
 * assignment: Check Point 2
-* date last modified: 10/27/2026
+* date last modified: 11/4/2026
 *
 * purpose: Builds a Chunk object out of Blocks by inserting the geometry data into the GLBuffer,
 * including position and color. 
@@ -471,9 +471,13 @@ public class Chunk {
     // Purpose: fills Blocks with a layered heightmap from two simplex noises,
     // small rolling hills plus rare large mountains, like Minecraft
     private void generateTerrain() {
+         Random r = new Random();
+         int tempSeed = r.nextInt();
         // Low persistence = smooth hills; larger feature size = wider shapes
-        SimplexNoise hills = new SimplexNoise(48, 0.35, SEED);
-        SimplexNoise mountains = new SimplexNoise(128, 0.5, SEED + 1);
+        // REPLACE tempSeed with SEED when finishing.
+        // Chunks are generated on random numbers for the sake of showing it's capabilities
+        SimplexNoise hills = new SimplexNoise(48, 0.35, tempSeed);
+        SimplexNoise mountains = new SimplexNoise(128, 0.5, tempSeed + 1);
         
         Blocks = new Block[CHUNK_SIZE][CHUNK_SIZE][CHUNK_SIZE];
         
@@ -483,7 +487,7 @@ public class Chunk {
                 int wx = StartX / CUBE_LENGTH + x;
                 int wz = StartZ / CUBE_LENGTH + z;
                 
-                // 2D noise per column: uses BOTH x and z
+                // 2D noise per column
                 double base = hills.getNoise(wx, wz);               // about -1 to 1
                 double m = (mountains.getNoise(wx, wz) + 1) / 2;    // 0 to 1
                 m = m * m * m;                                      // cubing makes mountains rare
@@ -492,7 +496,7 @@ public class Chunk {
                 
                 height = Math.max(1, Math.min(CHUNK_SIZE - 1, height));
                 
-                // Fill the column in layers, bottom to top
+                // Fill the column in layers bottom to top
                 for (int y = 0; y < CHUNK_SIZE; y++) {
                     Block.BlockType type = null;    // null = air
                     
@@ -553,5 +557,6 @@ public class Chunk {
         
         generateTerrain();
         rebuildMesh(startX, startY, startZ);
+
     }
 }

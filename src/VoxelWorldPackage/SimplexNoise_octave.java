@@ -6,18 +6,15 @@
 * assignment: Check Point 2
 * date last modified: 10/28/2026
 *
-* purpose: 
+* purpose: The full-blown SimplexNoise generator based on a seed/input.
 *
 ****************************************************************
 */
 package VoxelWorldPackage;
 
-import java.awt.Color;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
+
 import java.util.Random;
-import javax.imageio.ImageIO;
+
 
 
 /*

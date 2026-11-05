@@ -27,6 +27,9 @@ import org.lwjgl.opengl.Display;
 import static org.lwjgl.opengl.GL11.*;
 import org.lwjgl.Sys;
 
+import java.util.List;
+import java.util.ArrayList;
+
 /**
  *
  * @author Fur4l
@@ -43,6 +46,7 @@ public class FPCameraController
     private Vector3Float me;
     
     private Chunk testChunk;
+    List<Chunk> listOfChunks = new ArrayList<>();
     
     //Method: FPCameraController
     //Purpose: Initializes a camera position within 3D world coordinates
@@ -153,7 +157,21 @@ public class FPCameraController
         //hide the mouse
         Mouse.setGrabbed(true);
         
+        
         testChunk = new Chunk(0, 0, 0);
+
+        listOfChunks.add(testChunk);
+        //Adding more chunks to showcase randomization
+        //listOfChunks.add(new Chunk(0 + (testChunk.CHUNK_SIZE * 2), 0 + (testChunk.CHUNK_SIZE * 2), 0 + (2 * testChunk.CHUNK_SIZE)));
+        listOfChunks.add(new Chunk(0 + testChunk.CHUNK_SIZE * 2, 0, 0 + testChunk.CHUNK_SIZE * 2));
+        listOfChunks.add(new Chunk(0 - testChunk.CHUNK_SIZE * 2, 0, 0 - testChunk.CHUNK_SIZE * 2));
+        listOfChunks.add(new Chunk(0 + testChunk.CHUNK_SIZE * 2, 0, 0 - testChunk.CHUNK_SIZE * 2));
+        listOfChunks.add(new Chunk(0 - testChunk.CHUNK_SIZE * 2, 0, 0 + testChunk.CHUNK_SIZE * 2));
+        listOfChunks.add(new Chunk(0, 0, 0 + testChunk.CHUNK_SIZE * 2));
+        listOfChunks.add(new Chunk(0, 0, 0 - testChunk.CHUNK_SIZE * 2));
+        listOfChunks.add(new Chunk(0 + testChunk.CHUNK_SIZE * 2, 0, 0));
+        listOfChunks.add(new Chunk(0 - testChunk.CHUNK_SIZE * 2, 0, 0));
+        
         
         while (!Display.isCloseRequested() &&
         !Keyboard.isKeyDown(Keyboard.KEY_ESCAPE))
@@ -219,7 +237,12 @@ public class FPCameraController
     {
         try
         {
-            testChunk.render();
+            
+            //testChunk.render();
+            for(Chunk c : listOfChunks)
+            {
+                c.render();
+            }
         }catch(Exception e){e.printStackTrace();}
     }
 }
