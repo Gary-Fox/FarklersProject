@@ -161,9 +161,10 @@ public class FPCameraController
     public void updateLight(float offsetX, float offsetY, float offsetZ)
     {
         FloatBuffer lightPosition = BufferUtils.createFloatBuffer(4);
-        lightPosition.put(lPosition.x + offsetX).put(lPosition.y + offsetY).put(lPosition.z + offsetZ).put(1.0f).flip();
+        lightPosition.put(lPosition.x += offsetX).put(lPosition.y += offsetY).put(lPosition.z += offsetZ).put(1.0f).flip();
         glLight(GL_LIGHT0, GL_POSITION, lightPosition);
     }
+
     
     //Method: gameLoop
     //Purpose: loops until the program is closed, handle all keybaord inputs and translate them 
@@ -241,6 +242,15 @@ public class FPCameraController
             {
                 this.moveDown(movementSpeed);
             }
+            if (Keyboard.isKeyDown(Keyboard.KEY_RSHIFT))
+            {
+                movementSpeed = .70f;
+            }
+            else
+            {
+                movementSpeed = .35f;
+            }
+            //if (Keyboard.)
             //set the modelview matrix back to the identity
             glLoadIdentity();
             //look through the camera before you draw anything
@@ -251,10 +261,12 @@ public class FPCameraController
             //draw the buffer to the screen
             Display.update();
             Display.sync(60);
+            //movementSpeed = .35f;
         }
             Display.destroy();
         
     }
+        
     
     //Method: Render
     //Purpose: Draw out graphics into world space, creating the world for exploration

@@ -52,7 +52,7 @@ public class Main
         //DO NOT CHANGE THAT LAST 1.0f, it tells openGL we're dealing with the light's coordinates
         lightPosition.put(0.0f).put(0.0f).put(0.0f).put(1.0f).flip();
         whiteLight = BufferUtils.createFloatBuffer(4);
-        whiteLight.put(0.8f).put(0.1f).put(0.1f).put(0.0f).flip();
+        whiteLight.put(1.0f).put(0.25f).put(0.25f).put(0.0f).flip();
     }
     
     //method: createWindow
