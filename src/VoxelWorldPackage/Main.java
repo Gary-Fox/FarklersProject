@@ -22,8 +22,6 @@ package VoxelWorldPackage;
  * @author Fur4l
  */
 
-
-
 //import java.io.BufferedReader;
 //import java.io.FileReader;
 //import java.io.IOException;
@@ -34,6 +32,8 @@ import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 import static org.lwjgl.opengl.GL11.*;
 import org.lwjgl.util.glu.GLU;
+import java.nio.FloatBuffer;
+import org.lwjgl.BufferUtils;
 //import org.lwjgl.util.glu.GLU;
 
 public class Main 
@@ -41,6 +41,19 @@ public class Main
     // changed to -5 for z to start the camera back from the block
     private final FPCameraController fp = new FPCameraController(0f, -50f, -5f);
     private DisplayMode displayMode;
+    private FloatBuffer lightPosition;
+    private FloatBuffer whiteLight;
+    
+    //method: initLightArrays
+    //purpose: This initializes the position of our light, as well as setting its color to white.
+    private void initLightArrays() 
+    {
+        lightPosition = BufferUtils.createFloatBuffer(4);
+        //DO NOT CHANGE THAT LAST 1.0f, it tells openGL we're dealing with the light's coordinates
+        lightPosition.put(0.0f).put(0.0f).put(0.0f).put(1.0f).flip();
+        whiteLight = BufferUtils.createFloatBuffer(4);
+        whiteLight.put(0.8f).put(0.1f).put(0.1f).put(0.0f).flip();
+    }
     
     //method: createWindow
     //purpose: Initialize window size, title, and fullscreeness
@@ -92,6 +105,16 @@ public class Main
         glEnable(GL_CULL_FACE);
         // tells gl that front faces of blocks are wound clockwise, so outward facing sides are kept and cull the inner ones with no flicker between neighbors
         glFrontFace(GL_CW);
+        
+        //Setting up light fixture
+        initLightArrays();
+        glLight(GL_LIGHT0, GL_POSITION, lightPosition); //sets our light’s position
+        glLight(GL_LIGHT0, GL_SPECULAR, whiteLight);//sets our specular light
+        glLight(GL_LIGHT0, GL_DIFFUSE, whiteLight);//sets our diffuse light
+        glLight(GL_LIGHT0, GL_AMBIENT, whiteLight);//sets our ambient light
+        glEnable(GL_LIGHTING);//enables our lighting
+        glEnable(GL_LIGHT0);//enables light0
+
     }
     
     //method: start

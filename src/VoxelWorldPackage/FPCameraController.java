@@ -30,7 +30,8 @@ import org.lwjgl.Sys;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Random;
-
+import java.nio.FloatBuffer;
+import org.lwjgl.BufferUtils;
 /**
  *
  * @author Fur4l
@@ -83,13 +84,15 @@ public class FPCameraController
     //Purpose: Moves the camera up relative to it's yaw
     public void moveUp(float distance)
     {
-    position.y -= distance;
+        position.y -= distance;
+        //updateLight(0, -distance, 0);
     }
     //Method: moveDown
     //Purpose: Moves the camera down relative to its yaw
     public void moveDown(float distance)
     {
-    position.y += distance;
+        position.y += distance;
+        //updateLight(0, distance, 0);
     }
     
     //Method: walkForward
@@ -100,6 +103,7 @@ public class FPCameraController
         float zOffset = distance * (float)Math.cos(Math.toRadians(yaw));
         position.x -= xOffset;
         position.z += zOffset;
+        updateLight(-xOffset, 0, zOffset);
     }
     
     //Method: walkBackwards
@@ -110,6 +114,7 @@ public class FPCameraController
         float zOffset = distance * (float)Math.cos(Math.toRadians(yaw));
         position.x += xOffset;
         position.z -= zOffset;
+        updateLight(xOffset, 0, -zOffset);
     }
     
     //Method: strafeLeft
@@ -120,6 +125,7 @@ public class FPCameraController
         float zOffset = distance * (float) Math.cos(Math.toRadians(yaw - 90));
         position.x -= xOffset;
         position.z += zOffset;
+        updateLight(-xOffset, 0, zOffset);
     }
     
     //Method: strafeRight
@@ -130,6 +136,7 @@ public class FPCameraController
         float zOffset = distance * (float)Math.cos(Math.toRadians(yaw+90));
         position.x -= xOffset;
         position.z += zOffset;
+        updateLight(-xOffset, 0, zOffset);
     }
     
     //Method: lookThrough
@@ -143,10 +150,24 @@ public class FPCameraController
         glRotatef(yaw, 0.0f, 1.0f, 0.0f);
         //translate to the position vector's location
         glTranslatef(position.x, position.y, position.z);
+        //Tranlate the position of the LIGHT
+        FloatBuffer lightPosition = BufferUtils.createFloatBuffer(4);
+        lightPosition.put(lPosition.x).put(lPosition.y).put(lPosition.z).put(1.0f).flip();
+        glLight(GL_LIGHT0, GL_POSITION, lightPosition);
+    }
+    
+    //Method: updateLight
+    //Purpose: Moving the light along with the camera. Should be called whenever the camera moves.
+    public void updateLight(float offsetX, float offsetY, float offsetZ)
+    {
+        FloatBuffer lightPosition = BufferUtils.createFloatBuffer(4);
+        lightPosition.put(lPosition.x + offsetX).put(lPosition.y + offsetY).put(lPosition.z + offsetZ).put(1.0f).flip();
+        glLight(GL_LIGHT0, GL_POSITION, lightPosition);
     }
     
     //Method: gameLoop
-    //Purpose: loops until the program is closed, handle all keybaord inputs and translate them into movement in world space.
+    //Purpose: loops until the program is closed, handle all keybaord inputs and translate them 
+    // into movement in world space.
     public void gameLoop()
     {
         //FPCameraController camera = new FPCameraController(0, 0, -5);
