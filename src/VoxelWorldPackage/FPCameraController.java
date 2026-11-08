@@ -46,6 +46,7 @@ public class FPCameraController
     //the rotation around the X axis of the camera
     private float pitch = 0.0f;
     private Vector3Float me;
+    private final int WORLD_SIZE = 2;
     
     private Chunk testChunk;
     List<Chunk> listOfChunks = new ArrayList<>();
@@ -182,13 +183,15 @@ public class FPCameraController
         float movementSpeed = .35f;
         //hide the mouse
         Mouse.setGrabbed(true);
+        int chunkOffset = Chunk.CHUNK_SIZE;
         
         
         testChunk = new Chunk(0, 0, 0, randomSeed);
 
-        listOfChunks.add(testChunk);
+        //istOfChunks.add(testChunk);
         //Adding more chunks to showcase randomization
         //listOfChunks.add(new Chunk(0 + (testChunk.CHUNK_SIZE * 2), 0 + (testChunk.CHUNK_SIZE * 2), 0 + (2 * testChunk.CHUNK_SIZE)));
+        /*
         listOfChunks.add(new Chunk(0 + testChunk.CHUNK_SIZE * 2, 0, 0 + testChunk.CHUNK_SIZE * 2, randomSeed));
         listOfChunks.add(new Chunk(0 - testChunk.CHUNK_SIZE * 2, 0, 0 - testChunk.CHUNK_SIZE * 2, randomSeed));
         listOfChunks.add(new Chunk(0 + testChunk.CHUNK_SIZE * 2, 0, 0 - testChunk.CHUNK_SIZE * 2, randomSeed));
@@ -197,6 +200,21 @@ public class FPCameraController
         listOfChunks.add(new Chunk(0, 0, 0 - testChunk.CHUNK_SIZE * 2, randomSeed));
         listOfChunks.add(new Chunk(0 + testChunk.CHUNK_SIZE * 2, 0, 0, randomSeed));
         listOfChunks.add(new Chunk(0 - testChunk.CHUNK_SIZE * 2, 0, 0, randomSeed));
+        */
+        
+        //Creating algorithm for a square of chunks
+        //The square should be SIZE distance away from where the player is (center of the square)
+        //SIZE distance north, south, east, west, and along the diagonals
+        for(int i = -WORLD_SIZE; i <= WORLD_SIZE; i++) 
+        {
+            for(int j = -WORLD_SIZE; j <= WORLD_SIZE; j++)
+            {
+                int chunkOffsetX = Chunk.CHUNK_SIZE * (2 * i);
+                int chunkOffsetZ = Chunk.CHUNK_SIZE * (2 * j);
+                listOfChunks.add(new Chunk((int)position.x + chunkOffsetX, 0, (int)position.z + chunkOffsetZ, randomSeed));
+            }
+        }
+         
         
         
         while (!Display.isCloseRequested() &&

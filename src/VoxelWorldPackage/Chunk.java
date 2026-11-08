@@ -83,18 +83,7 @@ public class Chunk {
     // Purpose: fills the buffer with the Block data
     public void rebuildMesh(float startX, float startY, float startZ) 
     {
-//        //adding noise
-//        Random r = new Random();
-//        //0.05 persistence adds some naturalness
-//        //0.03 allows for mostly flat land with some minor hills
-//        SimplexNoise noise = new SimplexNoise(10, 0.03, r.nextInt());
-//
-//        //Replace r.nextInt() with x, y, z???
-//
-//        
-//        VBOColorHandle = glGenBuffers();
-//        VBOVertexHandle = glGenBuffers();
-//        VBOTextureHandle = glGenBuffers();
+
         FloatBuffer VertexPositionData = BufferUtils.createFloatBuffer((CHUNK_SIZE * CHUNK_SIZE * CHUNK_SIZE) * 6 * 12);
         FloatBuffer VertexColorData = BufferUtils.createFloatBuffer((CHUNK_SIZE* CHUNK_SIZE * CHUNK_SIZE) * 6 * 12);
         
@@ -119,42 +108,6 @@ public class Chunk {
                 }
             }
         }
-        
-//        for (float x = 0; x < CHUNK_SIZE; x += 1)
-//        {
-//
-//
-//            for (float z = 0; z < CHUNK_SIZE; z += 1) 
-//            {
-//                float maxHeight = Math.abs(((startY + (int)(100*noise.getNoise((int)x, 1, 1) * CUBE_LENGTH)) % 10) + 1);
-//                System.out.println("maxHeight: " + maxHeight);
-//                if(maxHeight <= 0)
-//                {
-//                    maxHeight = 1;
-//                }
-//                for(float y = 0; y < maxHeight; y++)
-//                {
-//                    //Trying my darndest to make the top blocks grass.
-//                    if( (y + 1) > maxHeight )
-//                    {
-//                        Blocks[(int)(x)][(int)(y)][(int)(z)].setID(0);
-//                    }
-//                        VertexPositionData.put(createCube((float) (startX + x * CUBE_LENGTH), (float)(y * CUBE_LENGTH + (int)(CHUNK_SIZE*.8)), (float) (startZ + z * CUBE_LENGTH)));
-//                        // Inside rebuildMesh loops:
-//                        VertexColorData.put(createCubeVertexCol(getCubeColor(Blocks[(int) x][(int) y][(int) z])));
-//                        VertexTextureData.put(createTexCube((float) 0, (float) 0, Blocks[(int)(x)][(int)(y)][(int)(z)]));
-//
-//                }
-//            }
-//        }
-        
-//        for(float y = 0; y<=max; y++)
-//        {
-//            VertexPositionData.put(
-//            createCube((float) (startX + x * CUBE_LENGTH),
-//            (float) (y*CUBE_LENGTH+(int)(CHUNK_SIZE*.8)),
-//            (float) (startZ + z * CUBE_LENGTH))
-//        }
         
         VertexColorData.flip();
         VertexPositionData.flip();

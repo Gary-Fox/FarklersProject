@@ -43,6 +43,8 @@ public class Main
     private DisplayMode displayMode;
     private FloatBuffer lightPosition;
     private FloatBuffer whiteLight;
+    private FloatBuffer redLight;
+    private FloatBuffer darkLight;
     
     //method: initLightArrays
     //purpose: This initializes the position of our light, as well as setting its color to white.
@@ -52,7 +54,11 @@ public class Main
         //DO NOT CHANGE THAT LAST 1.0f, it tells openGL we're dealing with the light's coordinates
         lightPosition.put(0.0f).put(0.0f).put(0.0f).put(1.0f).flip();
         whiteLight = BufferUtils.createFloatBuffer(4);
-        whiteLight.put(1.0f).put(0.25f).put(0.25f).put(0.0f).flip();
+        redLight = BufferUtils.createFloatBuffer(4);
+        darkLight = BufferUtils.createFloatBuffer(4);
+        whiteLight.put(1.0f).put(1.0f).put(1.0f).put(0.0f).flip();
+        redLight.put(1.75f).put(0.25f).put(0.25f).put(0.0f).flip();
+        darkLight.put(0.25f).put(0.25f).put(0.25f).put(0.25f).flip();
     }
     
     //method: createWindow
@@ -109,9 +115,9 @@ public class Main
         //Setting up light fixture
         initLightArrays();
         glLight(GL_LIGHT0, GL_POSITION, lightPosition); //sets our light’s position
-        glLight(GL_LIGHT0, GL_SPECULAR, whiteLight);//sets our specular light
+        glLight(GL_LIGHT0, GL_SPECULAR, redLight);//sets our specular light
         glLight(GL_LIGHT0, GL_DIFFUSE, whiteLight);//sets our diffuse light
-        glLight(GL_LIGHT0, GL_AMBIENT, whiteLight);//sets our ambient light
+        glLight(GL_LIGHT0, GL_AMBIENT, redLight);//sets our ambient light
         glEnable(GL_LIGHTING);//enables our lighting
         glEnable(GL_LIGHT0);//enables light0
 
