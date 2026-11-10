@@ -47,6 +47,8 @@ public class FPCameraController
     private float pitch = 0.0f;
     private Vector3Float me;
     private final int WORLD_SIZE = 2;
+    private boolean guiVisible = false;
+    private GUI g;
     
     private Chunk testChunk;
     List<Chunk> listOfChunks = new ArrayList<>();
@@ -64,6 +66,8 @@ public class FPCameraController
         lPosition.x = 0f;
         lPosition.y = 15f;
         lPosition.z = 0f;
+        
+        g = new GUI();
     }
     
     //Method: yaw
@@ -213,9 +217,7 @@ public class FPCameraController
                 int chunkOffsetZ = Chunk.CHUNK_SIZE * (2 * j);
                 listOfChunks.add(new Chunk((int)position.x + chunkOffsetX, 0, (int)position.z + chunkOffsetZ, randomSeed));
             }
-        }
-         
-        
+        }   
         
         while (!Display.isCloseRequested() &&
         !Keyboard.isKeyDown(Keyboard.KEY_ESCAPE))
@@ -267,7 +269,27 @@ public class FPCameraController
             else
             {
                 movementSpeed = .35f;
+            }          
+            
+            while (Keyboard.next()) {
+                // Check if the event is a key press (not a release)
+                if (Keyboard.getEventKeyState()) {
+                    int key = Keyboard.getEventKey();
+
+                    if (key == Keyboard.KEY_TAB) {
+                        if (!g.getBuildComplete() && !guiVisible)
+                        {
+                            guiVisible = true;
+                            g.buildGUI();                  
+                        } else if (g.getBuildComplete() && guiVisible) {
+                            guiVisible = false;
+                            g.destroyGUI();
+                        }
+                        System.out.println("Toggle is now: " + guiVisible);
+                    }
+                }
             }
+            
             //if (Keyboard.)
             //set the modelview matrix back to the identity
             glLoadIdentity();
