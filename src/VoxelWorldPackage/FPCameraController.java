@@ -280,16 +280,17 @@ public class FPCameraController
                         if (!g.getBuildComplete() && !guiVisible)
                         {
                             guiVisible = true;
+                            Mouse.setGrabbed(false);
                             g.buildGUI();                  
                         } else if (g.getBuildComplete() && guiVisible) {
                             guiVisible = false;
+                            Mouse.setGrabbed(true);
                             g.destroyGUI();
                         }
                         System.out.println("Toggle is now: " + guiVisible);
                     }
                 }
-            }
-            
+            }   
             //if (Keyboard.)
             //set the modelview matrix back to the identity
             glLoadIdentity();
@@ -298,6 +299,10 @@ public class FPCameraController
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
             //you would draw your scene here.
             render();
+            
+            if (guiVisible) {
+                g.renderGUI();
+            }
             //draw the buffer to the screen
             Display.update();
             Display.sync(60);
