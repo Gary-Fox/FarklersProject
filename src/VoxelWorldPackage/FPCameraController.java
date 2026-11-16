@@ -224,52 +224,54 @@ public class FPCameraController
         {
             time = Sys.getTime();
             lastTime = time;
-            //distance in mouse movement
-            //from the last getDX() call.
-            dx = Mouse.getDX();
-            //distance in mouse movement
-            //from the last getDY() call.
-            dy = Mouse.getDY();
-            
-            this.yaw(dx * mouseSensitivity);
-            this.pitch(dy * mouseSensitivity);
-            //when passing in the distance to move
-            //we times the movementSpeed with dt this is a time scale
-            //so if its a slow frame u move more then a fast frame
-            //so on a slow computer you move just as fast as on a fast computer
-            //REPLACE WITH A SWITCH CASE??? Jeez
-            if (Keyboard.isKeyDown(Keyboard.KEY_W))//move forward
-            {
-                this.walkForward(movementSpeed);
+            if (!guiVisible) {
+                //distance in mouse movement
+                //from the last getDX() call.
+                dx = Mouse.getDX();
+                //distance in mouse movement
+                //from the last getDY() call.
+                dy = Mouse.getDY();
+
+                this.yaw(dx * mouseSensitivity);
+                this.pitch(dy * mouseSensitivity); 
+                //when passing in the distance to move
+                //we times the movementSpeed with dt this is a time scale
+                //so if its a slow frame u move more then a fast frame
+                //so on a slow computer you move just as fast as on a fast computer
+                //REPLACE WITH A SWITCH CASE??? Jeez
+                if (Keyboard.isKeyDown(Keyboard.KEY_W))//move forward
+                {
+                    this.walkForward(movementSpeed);
+                }
+                if (Keyboard.isKeyDown(Keyboard.KEY_S))//move backwards
+                {
+                    this.walkBackwards(movementSpeed);
+                }
+                if (Keyboard.isKeyDown(Keyboard.KEY_A))//strafe left 
+                {
+                    this.strafeLeft(movementSpeed);
+                }
+                if (Keyboard.isKeyDown(Keyboard.KEY_D))//strafe right 
+                {
+                    this.strafeRight(movementSpeed);
+                }
+                if (Keyboard.isKeyDown(Keyboard.KEY_SPACE))//move up 
+                {
+                    this.moveUp(movementSpeed);
+                }
+                if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) 
+                {
+                    this.moveDown(movementSpeed);
+                }
+                if (Keyboard.isKeyDown(Keyboard.KEY_RSHIFT))
+                {
+                    movementSpeed = .70f;
+                }
+                else
+                {
+                    movementSpeed = .35f;
+                }
             }
-            if (Keyboard.isKeyDown(Keyboard.KEY_S))//move backwards
-            {
-                this.walkBackwards(movementSpeed);
-            }
-            if (Keyboard.isKeyDown(Keyboard.KEY_A))//strafe left 
-            {
-                this.strafeLeft(movementSpeed);
-            }
-            if (Keyboard.isKeyDown(Keyboard.KEY_D))//strafe right 
-            {
-                this.strafeRight(movementSpeed);
-            }
-            if (Keyboard.isKeyDown(Keyboard.KEY_SPACE))//move up 
-            {
-                this.moveUp(movementSpeed);
-            }
-            if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) 
-            {
-                this.moveDown(movementSpeed);
-            }
-            if (Keyboard.isKeyDown(Keyboard.KEY_RSHIFT))
-            {
-                movementSpeed = .70f;
-            }
-            else
-            {
-                movementSpeed = .35f;
-            }          
             
             while (Keyboard.next()) {
                 // Check if the event is a key press (not a release)
