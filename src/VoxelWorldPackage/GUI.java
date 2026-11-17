@@ -7,6 +7,9 @@ public class GUI {
     private boolean buildComplete = false;
     private Button saveBtn;
     private Button loadBtn;
+    
+    private UIElement titleText;
+    private UIElement saveFilesContainer;
 
     public GUI() {
     }
@@ -20,16 +23,24 @@ public class GUI {
     }
 
     public void buildGUI() { 
-        float[] normal  = { 0.2f, 0.2f, 0.2f };  // Dark gray
-        float[] hover   = { 0.35f, 0.35f, 0.35f }; // Lighter gray
-        float[] pressed = { 0.1f, 0.5f, 0.8f };  // Blue highlight
+        float[] text  = { 1.0f, 0.0f, 0.0f, 0.0f};
+        
+        titleText = new UIElement(((float)Display.getWidth() / 2.0f) - 800.0f, 150.0f, 1600.0f, 300.0f, "Settings", 50, text);
+        
+        float[] normal  = { 0.2f, 0.2f, 0.2f, 1.0f };  // Dark gray
+        float[] hover   = { 0.35f, 0.35f, 0.35f, 1.0f }; // Lighter gray
+        float[] pressed = { 0.1f, 0.5f, 0.8f, 1.0f };  // Blue highlight
 
         LoadAction l = new LoadAction();
         SaveAction s = new SaveAction();
         float[] p = {};
         
-        saveBtn = new Button(50.0f + (float)Display.getWidth() / 4.0f, (float)Display.getHeight() / 4.0f, 400.0f, 100.0f, "Save", normal, hover, pressed, s, p);
-        loadBtn = new Button(500.0f + (float)Display.getWidth() / 4.0f, (float)Display.getHeight() / 4.0f, 400.0f, 100.0f, "Load", normal, hover, pressed, l, p);
+        saveBtn = new Button((float)Display.getWidth() / 2.0f - 450.0f, (float)Display.getHeight() / 4.0f, 
+                400.0f, 100.0f, "Save", 18, normal, hover, pressed, s, p);
+        loadBtn = new Button((450.0f + (float)Display.getWidth() / 2.0f) - 425.0f, (float)Display.getHeight() / 4.0f, 
+                400.0f, 100.0f, "Load", 18, normal, hover, pressed, l, p);
+        saveFilesContainer = new UIElement(((float)Display.getWidth() / 2.0f) - 1000.0f, ((float)Display.getHeight() / 2.0f) - 100.0f, 
+                2000.0f, 700.0f, "", 1, normal);
         setBuildComplete(true);
     }
 
@@ -62,6 +73,9 @@ public class GUI {
             glVertex2f((float) Display.getWidth(), 0.0f);             // Top-Right
         glEnd();
 
+        saveFilesContainer.render();
+        titleText.render();
+        
         // Update and Draw Button
         saveBtn.update();
         saveBtn.render();

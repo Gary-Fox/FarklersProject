@@ -17,13 +17,13 @@ public class UIElement {
     private Color textColor = Color.white;
 
 
-    public UIElement(float x, float y, float width, float height, String text, float[] normalColor) {
+    public UIElement(float x, float y, float width, float height, String text, int fontSize, float[] normalColor) {
         this.x = x;
         this.y = y;
         this.width = width;
         this.height = height;
         this.text = text;
-        Font awtFont = new Font("Arial", Font.BOLD, 18);
+        Font awtFont = new Font("Arial", Font.BOLD, fontSize);
         TrueTypeFont guiFont = new TrueTypeFont(awtFont, true);
         this.font = guiFont;
         this.normalColor = normalColor;    
@@ -32,7 +32,7 @@ public class UIElement {
 
     public void render() {
         glDisable(GL_TEXTURE_2D);
-        glColor3f(activeColor[0], activeColor[1], activeColor[2]);
+        glColor4f(activeColor[0], activeColor[1], activeColor[2], activeColor[3]);
 
         glBegin(GL_QUADS);
             glVertex2f(x, y);
