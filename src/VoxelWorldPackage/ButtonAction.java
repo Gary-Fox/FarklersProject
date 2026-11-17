@@ -5,5 +5,5 @@
 package VoxelWorldPackage;
 
 public interface ButtonAction {
-    public void onClick();
+    public void onClick(float[] params);
 }

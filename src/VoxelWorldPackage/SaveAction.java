@@ -10,7 +10,7 @@ package VoxelWorldPackage;
  */
 public class SaveAction implements ButtonAction{
     @Override
-    public void onClick() {
+    public void onClick(float[] params) {
         System.out.println("Saved!");
     }
 }

@@ -26,9 +26,10 @@ public class GUI {
 
         LoadAction l = new LoadAction();
         SaveAction s = new SaveAction();
+        float[] p = {};
         
-        saveBtn = new Button(50.0f + (float)Display.getWidth() / 4.0f, (float)Display.getHeight() / 4.0f, 400.0f, 100.0f, "Save", normal, hover, pressed, s);
-        loadBtn = new Button(500.0f + (float)Display.getWidth() / 4.0f, (float)Display.getHeight() / 4.0f, 400.0f, 100.0f, "Load", normal, hover, pressed, l);
+        saveBtn = new Button(50.0f + (float)Display.getWidth() / 4.0f, (float)Display.getHeight() / 4.0f, 400.0f, 100.0f, "Save", normal, hover, pressed, s, p);
+        loadBtn = new Button(500.0f + (float)Display.getWidth() / 4.0f, (float)Display.getHeight() / 4.0f, 400.0f, 100.0f, "Load", normal, hover, pressed, l, p);
         setBuildComplete(true);
     }
 
