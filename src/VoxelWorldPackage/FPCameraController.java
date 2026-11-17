@@ -191,6 +191,7 @@ public class FPCameraController
         
         
         testChunk = new Chunk(0, 0, 0, randomSeed);
+        g.setSavedSeed(randomSeed);
 
         //istOfChunks.add(testChunk);
         //Adding more chunks to showcase randomization
