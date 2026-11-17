@@ -7,7 +7,8 @@ import static org.lwjgl.opengl.GL11.*;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.TrueTypeFont;
 
-public class Button extends GUIObject {
+public class Button {
+    public float x, y, width, height;
     private float[] normalColor, hoverColor, pressedColor;
     private boolean isPressed = false;
     private boolean isHovered = false;
@@ -16,9 +17,14 @@ public class Button extends GUIObject {
     private String text;
     private TrueTypeFont font;
     private Color textColor = Color.white;
+    
+    private ButtonAction onClickAction;
 
-    public Button(float x, float y, float width, float height, String text, float[] normalColor, float[] hoverColor, float[] pressedColor) {
-        super(x, y, width, height);
+    public Button(float x, float y, float width, float height, String text, float[] normalColor, float[] hoverColor, float[] pressedColor, ButtonAction onClickAction) {
+        this.x = x;
+        this.y = y;
+        this.width = width;
+        this.height = height;
         this.text = text;
         Font awtFont = new Font("Arial", Font.BOLD, 18);
         TrueTypeFont guiFont = new TrueTypeFont(awtFont, true);
@@ -26,6 +32,7 @@ public class Button extends GUIObject {
         this.normalColor = normalColor;
         this.hoverColor = hoverColor;
         this.pressedColor = pressedColor;
+        this.onClickAction = onClickAction;
     }
 
     public void update() {
@@ -41,7 +48,7 @@ public class Button extends GUIObject {
                 isPressed = true;
             } else {
                 if (isPressed && wasMouseDown) {
-                    System.out.println("button pressed!");
+                    onClickAction.onClick();
                 }
                 isPressed = false;
             }

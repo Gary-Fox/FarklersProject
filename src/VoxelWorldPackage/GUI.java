@@ -5,7 +5,8 @@ import static org.lwjgl.opengl.GL11.*;
 
 public class GUI {
     private boolean buildComplete = false;
-    private Button startBtn;
+    private Button saveBtn;
+    private Button loadBtn;
 
     public GUI() {
     }
@@ -23,8 +24,11 @@ public class GUI {
         float[] hover   = { 0.35f, 0.35f, 0.35f }; // Lighter gray
         float[] pressed = { 0.1f, 0.5f, 0.8f };  // Blue highlight
 
-        // Make sure your Button constructor matches the arguments you pass here
-        startBtn = new Button(100.0f, 150.0f, 200.0f, 50.0f, "Test", normal, hover, pressed);
+        LoadAction l = new LoadAction();
+        SaveAction s = new SaveAction();
+        
+        saveBtn = new Button(50.0f + (float)Display.getWidth() / 4.0f, (float)Display.getHeight() / 4.0f, 400.0f, 100.0f, "Save", normal, hover, pressed, s);
+        loadBtn = new Button(500.0f + (float)Display.getWidth() / 4.0f, (float)Display.getHeight() / 4.0f, 400.0f, 100.0f, "Load", normal, hover, pressed, l);
         setBuildComplete(true);
     }
 
@@ -58,8 +62,10 @@ public class GUI {
         glEnd();
 
         // Update and Draw Button
-        startBtn.update();
-        startBtn.render();
+        saveBtn.update();
+        saveBtn.render();
+        loadBtn.update();
+        loadBtn.render();
 
         // Restore 3D states and matrices
         glDisable(GL_BLEND);
