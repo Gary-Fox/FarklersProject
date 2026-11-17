@@ -18,19 +18,19 @@ public class GUI {
         buildComplete = b;
     }
 
-    public void buildGUI() {
+    public void buildGUI() { 
         float[] normal  = { 0.2f, 0.2f, 0.2f };  // Dark gray
         float[] hover   = { 0.35f, 0.35f, 0.35f }; // Lighter gray
         float[] pressed = { 0.1f, 0.5f, 0.8f };  // Blue highlight
 
         // Make sure your Button constructor matches the arguments you pass here
-        startBtn = new Button(100.0f, 150.0f, 200.0f, 50.0f, normal, hover, pressed);
+        startBtn = new Button(100.0f, 150.0f, 200.0f, 50.0f, "Test", normal, hover, pressed);
         setBuildComplete(true);
     }
 
     public void renderGUI() {
         if (!buildComplete) return;
-
+        
         // Save 3D Projection Matrix & switch to 2D Top-Left Ortho
         glMatrixMode(GL_PROJECTION);
         glPushMatrix();
@@ -48,6 +48,14 @@ public class GUI {
         glDisable(GL_TEXTURE_2D);
         glEnable(GL_BLEND);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+        
+        glColor4f(0.0f, 0.0f, 0.0f, 0.5f); // Semi-transparent black (use 1.0f alpha for solid)
+        glBegin(GL_QUADS);
+            glVertex2f(0.0f, 0.0f);                                   // Top-Left
+            glVertex2f(0.0f, (float) Display.getHeight());            // Bottom-Left
+            glVertex2f((float) Display.getWidth(), (float) Display.getHeight()); // Bottom-Right
+            glVertex2f((float) Display.getWidth(), 0.0f);             // Top-Right
+        glEnd();
 
         // Update and Draw Button
         startBtn.update();
