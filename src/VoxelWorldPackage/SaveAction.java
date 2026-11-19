@@ -25,7 +25,7 @@ public class SaveAction implements ButtonAction{
     private float savedSeed;
     private GUI GUIReference;
     
-    private int staleID;
+    private int staleID = -1;
     
     public SaveAction(GUI g)
     {
@@ -53,10 +53,11 @@ public class SaveAction implements ButtonAction{
             timestamp = Instant.now();
             
             SaveFileSlot selectedSlot = GUIReference.getSelectedSaveFileSlot();
-            if (selectedSlot == null && GUIReference.getSaveFileCount() < 8) {
-                GUIReference.addSaveFileSlot(saveID, savedSeed, timestamp);
-            } 
-            if ((GUIReference.getSaveFileCount() < 8 && selectedSlot == null) || selectedSlot != null) {
+            if ((GUIReference.getSaveFileCount() <= 8 && selectedSlot == null) || selectedSlot != null) {
+                if (selectedSlot == null && GUIReference.getSaveFileCount() <= 8) {
+                    GUIReference.addSaveFileSlot(saveID, savedSeed, timestamp);
+                } 
+                
                 if (selectedSlot != null) {
                     staleID = selectedSlot.getSaveID();
                 }
@@ -69,6 +70,7 @@ public class SaveAction implements ButtonAction{
                     selectedSlot.overwriteData(saveID, savedSeed, timestamp);
                     
                     Files.deleteIfExists(Paths.get("Saves/save_" + staleID));
+                    staleID = -1;
                 }
 
                 FileWriter fWriter = new FileWriter("Saves/save_" + saveID);
