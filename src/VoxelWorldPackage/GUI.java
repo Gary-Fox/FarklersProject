@@ -42,17 +42,17 @@ public class GUI {
   
         float[] p = {savedSeed};
         
-        saveBtn = new Button((float)Display.getWidth() / 2.0f - 450.0f, (float)Display.getHeight() / 4.0f, 
-                400.0f, 100.0f, "Save", 18, normal, hover, pressed, save, p);
-        loadBtn = new Button((450.0f + (float)Display.getWidth() / 2.0f) - 425.0f, (float)Display.getHeight() / 4.0f, 
-                400.0f, 100.0f, "Load", 18, normal, hover, pressed, load, p);
-        
         saveFilesContainer = new UIElement(200.0f, ((float)Display.getHeight() / 2.0f) - 100.0f, 
                 (float)Display.getWidth() - 400.0f, (float)Display.getHeight() - 500.0f, "", 1, normal);
         
         load = new LoadAction();
         save = new SaveAction(this);
         
+        saveBtn = new Button((float)Display.getWidth() / 2.0f - 450.0f, (float)Display.getHeight() / 4.0f, 
+                400.0f, 100.0f, "Save", 18, normal, hover, pressed, save, p);
+        loadBtn = new Button((450.0f + (float)Display.getWidth() / 2.0f) - 425.0f, (float)Display.getHeight() / 4.0f, 
+                400.0f, 100.0f, "Load", 18, normal, hover, pressed, load, p);
+    
         setBuildComplete(true);
     }
     
@@ -139,5 +139,9 @@ public class GUI {
     
     public void setSavedSeed(float s) {
         savedSeed = s;
+    }
+    
+    public int getSaveFileCount() {
+        return saveFiles.size();
     }
 }

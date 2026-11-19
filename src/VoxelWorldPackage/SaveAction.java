@@ -33,14 +33,10 @@ public class SaveAction implements ButtonAction{
 
             if (Files.exists(folder)) {
                 DirectoryStream<Path> stream = Files.newDirectoryStream(folder);
-                for (Path f : stream) {
-                    int fileNum = Integer.parseInt(f.toString().substring(11));      
-                    if (saveID <= fileNum) {
-                        saveID = fileNum;
-                    }
-                    
+                for (Path f : stream) {                    
                     List<String> fileData = Files.readAllLines(f);
                     g.addSaveFileSlot(Integer.parseInt(fileData.get(0)), Float.parseFloat(fileData.get(1)), Instant.parse(fileData.get(2)));
+                    saveID = Integer.parseInt(fileData.get(0)) + 1;
                 }
             } 
         } catch (IOException e) {
@@ -50,7 +46,7 @@ public class SaveAction implements ButtonAction{
     
     @Override
     public void onClick(float[] params) {
-        if (saveID < 8) {
+        if (GUIReference.getSaveFileCount() < 8) {
             try {
                 Path saveDir = Path.of(System.getProperty("user.dir"),"Saves");
                 Files.createDirectories(saveDir);
