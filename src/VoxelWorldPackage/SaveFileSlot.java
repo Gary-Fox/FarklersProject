@@ -21,8 +21,15 @@ public class SaveFileSlot extends Button {
     private Instant timestamp;
     private float savedSeed;
     
-    public SaveFileSlot(float x, float y, float width, float height, String text, int fontSize, float[] normalColor, float[] hoverColor, float[] pressedColor, ButtonAction onClickAction, float[] params) {
+    public SaveFileSlot(float x, float y, float width, float height, int fontSize, float[] normalColor, 
+            float[] hoverColor, float[] pressedColor, int id, float seed, Instant timestamp) {
+        ButtonAction onClickAction = new LoadAction();
+        float[] params = {};
+        String text = "SAVE " + id + " saved " + timestamp + " // SEED: " + seed;
         super(x, y, width, height, text, fontSize, normalColor, hoverColor, pressedColor, onClickAction, params);
+        saveID = id;
+        savedSeed = seed;
+        this.timestamp = timestamp;
     }
     
     @Override 

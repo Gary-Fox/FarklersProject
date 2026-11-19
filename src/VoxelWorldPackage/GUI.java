@@ -1,17 +1,24 @@
 package VoxelWorldPackage;
 
+import java.util.ArrayList;
 import org.lwjgl.opengl.Display;
 import static org.lwjgl.opengl.GL11.*;
+import java.time.Instant;
 
 public class GUI {
     private boolean buildComplete = false;
     private Button saveBtn;
     private Button loadBtn;
+    private SaveFileSlot saveFileSlot;
+    private ArrayList<SaveFileSlot> saveFiles = new ArrayList<>();
     
     private UIElement titleText;
     private UIElement saveFilesContainer;
     
     private float savedSeed; 
+    private int saveSlotCount = 0;
+    private LoadAction load;
+    private SaveAction save;
 
     public GUI() {
     }
@@ -27,24 +34,49 @@ public class GUI {
     public void buildGUI() { 
         float[] text  = { 1.0f, 0.0f, 0.0f, 0.0f};
         
-        titleText = new UIElement(((float)Display.getWidth() / 2.0f) - 800.0f, 150.0f, 1600.0f, 300.0f, "Settings", 50, text);
+        titleText = new UIElement(((float)Display.getWidth() / 2.0f) - 800.0f, (float)Display.getHeight() - 1100.0f, 1600.0f, 300.0f, "Settings", 50, text);
         
         float[] normal  = { 0.2f, 0.2f, 0.2f, 1.0f };  // Dark gray
         float[] hover   = { 0.35f, 0.35f, 0.35f, 1.0f }; // Lighter gray
         float[] pressed = { 0.1f, 0.5f, 0.8f, 1.0f };  // Blue highlight
-
-        LoadAction l = new LoadAction();
-        SaveAction s = new SaveAction();
+  
         float[] p = {savedSeed};
         
         saveBtn = new Button((float)Display.getWidth() / 2.0f - 450.0f, (float)Display.getHeight() / 4.0f, 
-                400.0f, 100.0f, "Save", 18, normal, hover, pressed, s, p);
+                400.0f, 100.0f, "Save", 18, normal, hover, pressed, save, p);
         loadBtn = new Button((450.0f + (float)Display.getWidth() / 2.0f) - 425.0f, (float)Display.getHeight() / 4.0f, 
-                400.0f, 100.0f, "Load", 18, normal, hover, pressed, l, p);
+                400.0f, 100.0f, "Load", 18, normal, hover, pressed, load, p);
         
-        saveFilesContainer = new UIElement(((float)Display.getWidth() / 2.0f) - 1000.0f, ((float)Display.getHeight() / 2.0f) - 100.0f, 
-                2000.0f, 700.0f, "", 1, normal);
+        saveFilesContainer = new UIElement(200.0f, ((float)Display.getHeight() / 2.0f) - 100.0f, 
+                (float)Display.getWidth() - 400.0f, (float)Display.getHeight() - 500.0f, "", 1, normal);
+        
+        load = new LoadAction();
+        save = new SaveAction(this);
+        
         setBuildComplete(true);
+    }
+    
+    public void addSaveFileSlot(int id, float seed, Instant timestamp) { 
+        float[] normal   = { 0.35f, 0.35f, 0.35f, 1.0f }; // Lighter gray
+        float[] pressed = { 0.1f, 0.5f, 0.8f, 1.0f };  // Blue highlight
+        
+        float slotWidth = (saveFilesContainer.width / 2.0f) - 20.0f;
+        float slotHeight = (saveFilesContainer.height / 4.0f) - 10.0f;
+        float xVal = 0.0f;
+        float yVal = 0.0f;
+        
+        if (saveFiles.size() >= 0 && saveFiles.size() <= 3) {
+            xVal = saveFilesContainer.x + 10.0f;
+            yVal = (saveFilesContainer.y + 5.0f) + ((saveFiles.size()) * (slotHeight + 10.0f));
+        } else if (saveFiles.size() >= 4 && saveFiles.size() <= 7) {
+            xVal = saveFilesContainer.x + slotWidth + 20.f;
+            yVal = (saveFilesContainer.y + 5.0f) + (((saveFiles.size() - 4)) * (slotHeight + 10.0f));
+        } else {
+            return;
+        }
+        
+        saveFileSlot = new SaveFileSlot(xVal, yVal, slotWidth, slotHeight, 18, normal, normal, pressed, id, seed, timestamp);
+        saveFiles.add(saveFileSlot);
     }
 
     public void renderGUI() {
@@ -84,6 +116,10 @@ public class GUI {
         saveBtn.render();
         loadBtn.update();
         loadBtn.render();
+        for (SaveFileSlot s : saveFiles) {
+            s.update();
+            s.render();
+        }
 
         // Restore 3D states and matrices
         glDisable(GL_BLEND);
