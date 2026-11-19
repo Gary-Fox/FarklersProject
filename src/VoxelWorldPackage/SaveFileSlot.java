@@ -76,4 +76,23 @@ public class SaveFileSlot extends Button {
         isSelected = false;
         isPressed = false;
     }
+    
+    public int getSaveID() {
+        return saveID;
+    }
+    
+    public float getSeed() {
+        return savedSeed;
+    }
+    
+    public Instant getTimestamp() {
+        return timestamp;
+    }
+    
+    public void overwriteData(int id, float seed, Instant timestamp) {
+        this.timestamp = timestamp;
+        saveID = id;
+        savedSeed = seed;
+        setText("SAVE " + id + " saved " + timestamp + " // SEED: " + seed);
+    }
 }

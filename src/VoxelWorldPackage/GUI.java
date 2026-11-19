@@ -149,6 +149,10 @@ public class GUI {
         return saveFiles.size();
     }
     
+    public SaveFileSlot getSelectedSaveFileSlot() {
+        return selectedSaveFileSlot;
+    }
+    
     public void setSelectedSaveFileSlot(SaveFileSlot s) {
         selectedSaveFileSlot = s;  
         

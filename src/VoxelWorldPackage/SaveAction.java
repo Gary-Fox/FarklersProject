@@ -46,8 +46,14 @@ public class SaveAction implements ButtonAction{
     
     @Override
     public void onClick(float[] params) {
-        if (GUIReference.getSaveFileCount() < 8) {
-            try {
+        try {
+            SaveFileSlot selectedSlot = GUIReference.getSelectedSaveFileSlot();
+            if (selectedSlot == null && GUIReference.getSaveFileCount() < 8) {
+                GUIReference.addSaveFileSlot(saveID, savedSeed, timestamp);
+            } 
+            if ((GUIReference.getSaveFileCount() < 8 && selectedSlot == null) || selectedSlot != null) {
+                int staleID = selectedSlot.getSaveID();
+                
                 Path saveDir = Path.of(System.getProperty("user.dir"),"Saves");
                 Files.createDirectories(saveDir);
 
@@ -55,18 +61,22 @@ public class SaveAction implements ButtonAction{
                 savedSeed = params[0];
 
                 timestamp = Instant.now();
+                
+                if (selectedSlot != null) {
+                    selectedSlot.overwriteData(saveID, savedSeed, timestamp);
+                    
+                    Files.deleteIfExists(Paths.get("Saves/save_" + staleID));
+                }
 
                 FileWriter fWriter = new FileWriter("Saves/save_" + saveID);
                 fWriter.write(saveID + "\n" + savedSeed + "\n" + timestamp);
                 fWriter.close();
 
-                System.out.println("SAVED=Save ID: " + saveID + " // Saved seed: " + savedSeed + " // Timestamp: " + timestamp);
-                GUIReference.addSaveFileSlot(saveID, savedSeed, timestamp);
-
-                saveID++;
-            } catch (IOException e) {
-                System.out.println(e);
+                System.out.println("SAVED=Save ID: " + saveID + " // Saved seed: " + savedSeed + " // Timestamp: " + timestamp);    
             }
+            saveID++;
+        } catch (IOException e) {
+            System.out.println(e);
         }
     }
 }
