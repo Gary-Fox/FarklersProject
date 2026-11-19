@@ -37,7 +37,7 @@ public class Button extends UIElement {
                 isPressed = true;
             } else {
                 if (isPressed && wasMouseDown) {
-                    onClickAction.onClick(params);
+                    clickAction();
                 }
                 isPressed = false;
             }
@@ -47,8 +47,12 @@ public class Button extends UIElement {
 
         wasMouseDown = isMouseDown;
     }
+    
+    public void clickAction() {
+        onClickAction.onClick(params);
+    }
 
-       @Override
+    @Override
     public void render() {
         if (isPressed) {
             setActiveColor(pressedColor);
