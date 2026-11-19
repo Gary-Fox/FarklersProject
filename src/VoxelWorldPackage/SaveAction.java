@@ -25,6 +25,8 @@ public class SaveAction implements ButtonAction{
     private float savedSeed;
     private GUI GUIReference;
     
+    private int staleID;
+    
     public SaveAction(GUI g)
     {
         GUIReference = g;
@@ -47,21 +49,22 @@ public class SaveAction implements ButtonAction{
     @Override
     public void onClick(float[] params) {
         try {
+            savedSeed = params[0];
+            timestamp = Instant.now();
+            
             SaveFileSlot selectedSlot = GUIReference.getSelectedSaveFileSlot();
             if (selectedSlot == null && GUIReference.getSaveFileCount() < 8) {
                 GUIReference.addSaveFileSlot(saveID, savedSeed, timestamp);
             } 
             if ((GUIReference.getSaveFileCount() < 8 && selectedSlot == null) || selectedSlot != null) {
-                int staleID = selectedSlot.getSaveID();
+                if (selectedSlot != null) {
+                    staleID = selectedSlot.getSaveID();
+                }
                 
                 Path saveDir = Path.of(System.getProperty("user.dir"),"Saves");
                 Files.createDirectories(saveDir);
 
-                File Obj = new File("Saves/save_" + saveID);
-                savedSeed = params[0];
-
-                timestamp = Instant.now();
-                
+                File Obj = new File("Saves/save_" + saveID);            
                 if (selectedSlot != null) {
                     selectedSlot.overwriteData(saveID, savedSeed, timestamp);
                     
