@@ -9,7 +9,6 @@ public class GUI {
     private boolean buildComplete = false;
     private Button saveBtn;
     private Button loadBtn;
-    private SaveFileSlot saveFileSlot;
     private ArrayList<SaveFileSlot> saveFiles = new ArrayList<>();
     
     private UIElement titleText;
@@ -19,8 +18,12 @@ public class GUI {
     private int saveSlotCount = 0;
     private LoadAction load;
     private SaveAction save;
+    private SelectAction selectSlot;
+    
+    private SaveFileSlot selectedSaveFileSlot;
 
     public GUI() {
+        selectSlot = new SelectAction(this);
     }
 
     public boolean getBuildComplete() {
@@ -47,7 +50,7 @@ public class GUI {
         
         load = new LoadAction();
         save = new SaveAction(this);
-        
+
         saveBtn = new Button((float)Display.getWidth() / 2.0f - 450.0f, (float)Display.getHeight() / 4.0f, 
                 400.0f, 100.0f, "Save", 18, normal, hover, pressed, save, p);
         loadBtn = new Button((450.0f + (float)Display.getWidth() / 2.0f) - 425.0f, (float)Display.getHeight() / 4.0f, 
@@ -58,6 +61,7 @@ public class GUI {
     
     public void addSaveFileSlot(int id, float seed, Instant timestamp) { 
         float[] normal   = { 0.35f, 0.35f, 0.35f, 1.0f }; // Lighter gray
+        float[] hover   = { 0.65f, 0.65f, 0.65f, 1.0f }; // Lighter gray
         float[] pressed = { 0.1f, 0.5f, 0.8f, 1.0f };  // Blue highlight
         
         float slotWidth = (saveFilesContainer.width / 2.0f) - 20.0f;
@@ -75,7 +79,7 @@ public class GUI {
             return;
         }
         
-        saveFileSlot = new SaveFileSlot(xVal, yVal, slotWidth, slotHeight, 18, normal, normal, pressed, id, seed, timestamp);
+        SaveFileSlot saveFileSlot = new SaveFileSlot(xVal, yVal, slotWidth, slotHeight, 18, normal, hover, pressed, selectSlot, id, seed, timestamp);
         saveFiles.add(saveFileSlot);
     }
 
@@ -143,5 +147,15 @@ public class GUI {
     
     public int getSaveFileCount() {
         return saveFiles.size();
+    }
+    
+    public void setSelectedSaveFileSlot(SaveFileSlot s) {
+        selectedSaveFileSlot = s;  
+        
+        for (SaveFileSlot save : saveFiles){
+            if (!save.equals(s)) {
+                save.deselect();
+            }
+        }
     }
 }

@@ -9,9 +9,9 @@ import org.newdawn.slick.TrueTypeFont;
 
 public class Button extends UIElement {
     private float[] hoverColor, pressedColor;
-    private boolean isPressed = false;
-    private boolean isHovered = false;
-    private boolean wasMouseDown = false;
+    public boolean isPressed = false;
+    public boolean isHovered = false;
+    public boolean wasMouseDown = false;
     
     private ButtonAction onClickAction;
     private float[] params;
@@ -64,5 +64,17 @@ public class Button extends UIElement {
         }
 
         super.render();
+    }
+    
+    public float[] getHoverColor() {
+        return hoverColor;
+    }
+    
+    public float[] getPressedColor() {
+        return pressedColor;
+    }
+    
+    public ButtonAction getAction() {
+        return onClickAction;
     }
 }
