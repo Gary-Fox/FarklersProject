@@ -21,7 +21,7 @@ public class LoadAction implements ButtonAction{
         {
             System.out.println("No save selected to load.");
         } else {
-            float loadedSeed = GUIReference.getSelectedSaveFileSlot().getSeed();
+            GUIReference.loadSelectedSeed();
         }
     }
 }

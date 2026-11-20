@@ -67,7 +67,7 @@ public class FPCameraController
         lPosition.y = 15f;
         lPosition.z = 0f;
         
-        g = new GUI();
+        g = new GUI(this);
     }
     
     //Method: yaw
@@ -272,7 +272,7 @@ public class FPCameraController
                 {
                     movementSpeed = .35f;
                 }
-            }
+            }      
             
             while (Keyboard.next()) {
                 // Check if the event is a key press (not a release)
@@ -294,6 +294,7 @@ public class FPCameraController
                     }
                 }
             }   
+            
             //if (Keyboard.)
             //set the modelview matrix back to the identity
             glLoadIdentity();
@@ -305,7 +306,7 @@ public class FPCameraController
             
             if (guiVisible) {
                 g.renderGUI();
-            }
+            } 
             //draw the buffer to the screen
             Display.update();
             Display.sync(60);
@@ -320,6 +321,7 @@ public class FPCameraController
     //Purpose: Draw out graphics into world space, creating the world for exploration
     private void render() 
     {
+        System.out.println(randomSeed);
         try
         {
             
@@ -333,6 +335,7 @@ public class FPCameraController
     
     public void updateSeed(int newSeed) {
         randomSeed = newSeed;
-    }
+        guiVisible = false;
+    }   
 }
 

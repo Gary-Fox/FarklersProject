@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import org.lwjgl.opengl.Display;
 import static org.lwjgl.opengl.GL11.*;
 import java.time.Instant;
+import org.lwjgl.input.Mouse;
 
 public class GUI {
     private boolean buildComplete = false;
@@ -21,9 +22,12 @@ public class GUI {
     private SelectAction selectSlot;
     
     private SaveFileSlot selectedSaveFileSlot;
+    
+    private FPCameraController worldReference;
 
-    public GUI() {
+    public GUI(FPCameraController f) {
         selectSlot = new SelectAction(this);
+        worldReference = f;
     }
 
     public boolean getBuildComplete() {
@@ -161,5 +165,11 @@ public class GUI {
                 save.deselect();
             }
         }
+    }
+    
+    public void loadSelectedSeed() {
+        worldReference.updateSeed(selectedSaveFileSlot.getSeed());
+        destroyGUI();
+        Mouse.setGrabbed(true);
     }
 }
