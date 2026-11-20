@@ -9,8 +9,19 @@ package VoxelWorldPackage;
  * @author crowbot
  */
 public class LoadAction implements ButtonAction{
+    private GUI GUIReference;
+    
+    public LoadAction(GUI g) {
+        GUIReference = g;
+    }
+    
     @Override
     public void onClick(float[] params) {
-        System.out.println("Loaded!");
+        if (GUIReference.getSelectedSaveFileSlot() == null) 
+        {
+            System.out.println("No save selected to load.");
+        } else {
+            float loadedSeed = GUIReference.getSelectedSaveFileSlot().getSeed();
+        }
     }
 }

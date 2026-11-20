@@ -61,15 +61,16 @@ public class SaveFileSlot extends Button {
     
     @Override
     public void clickAction() {
-        System.out.println("Selected Slot: SAVE ID " + saveID);
-        
+        SelectAction s = (SelectAction)getAction();
         if (!isSelected) {
             isSelected = true;
-            SelectAction s = (SelectAction)getAction();
+            
             s.setSelectedSaveFileSlot(this);
+            System.out.println("Selected Slot: SAVE ID " + saveID);
         } else {
             deselect();
-        }     
+            s.clearSelectedSaveFileSlot();
+        }  
     }
     
     public void deselect() {

@@ -26,6 +26,7 @@ public class SaveAction implements ButtonAction{
     private GUI GUIReference;
     
     private int staleID = -1;
+    private int filesInDir = 0;
     
     public SaveAction(GUI g)
     {
@@ -39,6 +40,7 @@ public class SaveAction implements ButtonAction{
                     List<String> fileData = Files.readAllLines(f);
                     g.addSaveFileSlot(Integer.parseInt(fileData.get(0)), Float.parseFloat(fileData.get(1)), Instant.parse(fileData.get(2)));
                     saveID = Integer.parseInt(fileData.get(0)) + 1;
+                    filesInDir++;
                 }
             } 
         } catch (IOException e) {
@@ -53,7 +55,7 @@ public class SaveAction implements ButtonAction{
             timestamp = Instant.now();
             
             SaveFileSlot selectedSlot = GUIReference.getSelectedSaveFileSlot();
-            if ((GUIReference.getSaveFileCount() <= 8 && selectedSlot == null) || selectedSlot != null) {
+            if ((GUIReference.getSaveFileCount() + 1 <= 8 && selectedSlot == null) || selectedSlot != null) {
                 if (selectedSlot == null && GUIReference.getSaveFileCount() <= 8) {
                     GUIReference.addSaveFileSlot(saveID, savedSeed, timestamp);
                 } 

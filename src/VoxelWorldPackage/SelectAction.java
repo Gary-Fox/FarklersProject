@@ -23,4 +23,8 @@ public class SelectAction implements ButtonAction{
     public void setSelectedSaveFileSlot(SaveFileSlot s) {
         GUIReference.setSelectedSaveFileSlot(s);
     }
+    
+    public void clearSelectedSaveFileSlot() {
+        GUIReference.setSelectedSaveFileSlot(null);
+    }
 }

@@ -48,7 +48,7 @@ public class GUI {
         saveFilesContainer = new UIElement(200.0f, ((float)Display.getHeight() / 2.0f) - 100.0f, 
                 (float)Display.getWidth() - 400.0f, (float)Display.getHeight() - 500.0f, "", 1, normal);
         
-        load = new LoadAction();
+        load = new LoadAction(this);
         save = new SaveAction(this);
 
         saveBtn = new Button((float)Display.getWidth() / 2.0f - 450.0f, (float)Display.getHeight() / 4.0f, 
