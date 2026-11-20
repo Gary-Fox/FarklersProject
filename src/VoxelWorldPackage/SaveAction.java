@@ -22,7 +22,7 @@ import java.util.List;
 public class SaveAction implements ButtonAction{
     private static int saveID = 0;
     private Instant timestamp;
-    private float savedSeed;
+    private int savedSeed;
     private GUI GUIReference;
     
     private int staleID = -1;
@@ -38,7 +38,7 @@ public class SaveAction implements ButtonAction{
                 DirectoryStream<Path> stream = Files.newDirectoryStream(folder);
                 for (Path f : stream) {                    
                     List<String> fileData = Files.readAllLines(f);
-                    g.addSaveFileSlot(Integer.parseInt(fileData.get(0)), Float.parseFloat(fileData.get(1)), Instant.parse(fileData.get(2)));
+                    g.addSaveFileSlot(Integer.parseInt(fileData.get(0)), Integer.parseInt(fileData.get(1)), Instant.parse(fileData.get(2)));
                     saveID = Integer.parseInt(fileData.get(0)) + 1;
                     filesInDir++;
                 }
@@ -49,7 +49,7 @@ public class SaveAction implements ButtonAction{
     }
     
     @Override
-    public void onClick(float[] params) {
+    public void onClick(int[] params) {
         try {
             savedSeed = params[0];
             timestamp = Instant.now();

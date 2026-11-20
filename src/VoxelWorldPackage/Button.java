@@ -14,9 +14,9 @@ public class Button extends UIElement {
     public boolean wasMouseDown = false;
     
     private ButtonAction onClickAction;
-    private float[] params;
+    private int[] params;
 
-    public Button(float x, float y, float width, float height, String text, int fontSize, float[] normalColor, float[] hoverColor, float[] pressedColor, ButtonAction onClickAction, float[] params) {
+    public Button(float x, float y, float width, float height, String text, int fontSize, float[] normalColor, float[] hoverColor, float[] pressedColor, ButtonAction onClickAction, int[] params) {
         super(x, y, width, height, text, fontSize, normalColor);
         this.hoverColor = hoverColor;
         this.pressedColor = pressedColor;

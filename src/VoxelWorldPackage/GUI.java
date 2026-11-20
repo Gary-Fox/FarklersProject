@@ -14,7 +14,7 @@ public class GUI {
     private UIElement titleText;
     private UIElement saveFilesContainer;
     
-    private float savedSeed; 
+    private int savedSeed; 
     private int saveSlotCount = 0;
     private LoadAction load;
     private SaveAction save;
@@ -43,7 +43,7 @@ public class GUI {
         float[] hover   = { 0.35f, 0.35f, 0.35f, 1.0f }; // Lighter gray
         float[] pressed = { 0.1f, 0.5f, 0.8f, 1.0f };  // Blue highlight
   
-        float[] p = {savedSeed};
+        int[] p = {savedSeed};
         
         saveFilesContainer = new UIElement(200.0f, ((float)Display.getHeight() / 2.0f) - 100.0f, 
                 (float)Display.getWidth() - 400.0f, (float)Display.getHeight() - 500.0f, "", 1, normal);
@@ -59,7 +59,7 @@ public class GUI {
         setBuildComplete(true);
     }
     
-    public void addSaveFileSlot(int id, float seed, Instant timestamp) { 
+    public void addSaveFileSlot(int id, int seed, Instant timestamp) { 
         float[] normal   = { 0.35f, 0.35f, 0.35f, 1.0f }; // Lighter gray
         float[] hover   = { 0.65f, 0.65f, 0.65f, 1.0f }; // Lighter gray
         float[] pressed = { 0.1f, 0.5f, 0.8f, 1.0f };  // Blue highlight
@@ -141,7 +141,7 @@ public class GUI {
         setBuildComplete(false);
     }
     
-    public void setSavedSeed(float s) {
+    public void setSavedSeed(int s) {
         savedSeed = s;
     }
     

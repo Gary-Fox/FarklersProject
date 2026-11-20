@@ -16,7 +16,7 @@ public class LoadAction implements ButtonAction{
     }
     
     @Override
-    public void onClick(float[] params) {
+    public void onClick(int[] params) {
         if (GUIReference.getSelectedSaveFileSlot() == null) 
         {
             System.out.println("No save selected to load.");

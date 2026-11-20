@@ -15,13 +15,13 @@ import java.time.Instant;
 public class SaveFileSlot extends Button {    
     private int saveID;
     private Instant timestamp;
-    private float savedSeed;
+    private int savedSeed;
     
     private boolean isSelected = false;
     
     public SaveFileSlot(float x, float y, float width, float height, int fontSize, float[] normalColor, 
-            float[] hoverColor, float[] pressedColor, ButtonAction onClickAction, int id, float seed, Instant timestamp) {
-        float[] params = {};
+            float[] hoverColor, float[] pressedColor, ButtonAction onClickAction, int id, int seed, Instant timestamp) {
+        int[] params = {};
         String text = "SAVE " + id + " saved " + timestamp + " // SEED: " + seed;
         super(x, y, width, height, text, fontSize, normalColor, hoverColor, pressedColor, onClickAction, params);
         saveID = id;
@@ -82,7 +82,7 @@ public class SaveFileSlot extends Button {
         return saveID;
     }
     
-    public float getSeed() {
+    public int getSeed() {
         return savedSeed;
     }
     
@@ -90,7 +90,7 @@ public class SaveFileSlot extends Button {
         return timestamp;
     }
     
-    public void overwriteData(int id, float seed, Instant timestamp) {
+    public void overwriteData(int id, int seed, Instant timestamp) {
         this.timestamp = timestamp;
         saveID = id;
         savedSeed = seed;

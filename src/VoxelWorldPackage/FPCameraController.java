@@ -330,5 +330,9 @@ public class FPCameraController
             }
         }catch(Exception e){e.printStackTrace();}
     }
+    
+    public void updateSeed(int newSeed) {
+        randomSeed = newSeed;
+    }
 }
 

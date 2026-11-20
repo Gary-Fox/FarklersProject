@@ -16,7 +16,7 @@ public class SelectAction implements ButtonAction{
     }
     
     @Override
-    public void onClick(float[] params) {
+    public void onClick(int[] params) {
         
     }
     
