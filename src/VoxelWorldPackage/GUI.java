@@ -1,3 +1,21 @@
+/***************************************************************
+* file: GUI.java
+* authors: Isabeau Cantoran, Kian Naderi, Jacob Carrasco. (The Farklers)
+* class: CS 4450.01 - Computer Graphics
+*
+* assignment: Check Point 1
+* date last modified: 10/17/2026
+*
+* purpose: A class used to handle the rendering of the save/load GUI and run the update functions
+* for the buttons.
+*
+****************************************************************
+/*
+
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
 package VoxelWorldPackage;
 
 import java.util.ArrayList;
