@@ -168,8 +168,9 @@ public class GUI {
     }
     
     public void loadSelectedSeed() {
-        worldReference.updateSeed(selectedSaveFileSlot.getSeed());
-        destroyGUI();
-        Mouse.setGrabbed(true);
+        if (selectedSaveFileSlot == null) return;
+            worldReference.updateSeed(selectedSaveFileSlot.getSeed());
+            destroyGUI();
+            Mouse.setGrabbed(true);
     }
 }

@@ -210,15 +210,7 @@ public class FPCameraController
         //Creating algorithm for a square of chunks
         //The square should be SIZE distance away from where the player is (center of the square)
         //SIZE distance north, south, east, west, and along the diagonals
-        for(int i = -WORLD_SIZE; i <= WORLD_SIZE; i++) 
-        {
-            for(int j = -WORLD_SIZE; j <= WORLD_SIZE; j++)
-            {
-                int chunkOffsetX = Chunk.CHUNK_SIZE * (2 * i);
-                int chunkOffsetZ = Chunk.CHUNK_SIZE * (2 * j);
-                listOfChunks.add(new Chunk((int)position.x + chunkOffsetX, 0, (int)position.z + chunkOffsetZ, randomSeed));
-            }
-        }   
+        generateWorld();
         
         while (!Display.isCloseRequested() &&
         !Keyboard.isKeyDown(Keyboard.KEY_ESCAPE))
@@ -333,9 +325,26 @@ public class FPCameraController
         }catch(Exception e){e.printStackTrace();}
     }
     
+    private void generateWorld() {
+        for (Chunk c : listOfChunks) {
+            c.cleanup();
+        }
+        listOfChunks.clear();
+        for (int i = -WORLD_SIZE; i <= WORLD_SIZE; i++) {
+            for (int j = -WORLD_SIZE; j <= WORLD_SIZE; j++) {
+                int chunkOffsetX = Chunk.CHUNK_SIZE * (2 * i);
+                int chunkOffsetZ = Chunk.CHUNK_SIZE * (2 * j);
+                listOfChunks.add(new Chunk((int)position.x + chunkOffsetX, 0, (int)position.z + chunkOffsetZ, randomSeed));
+            }
+        }
+    }
+
+    
     public void updateSeed(int newSeed) {
         randomSeed = newSeed;
+        g.setSavedSeed(newSeed);
         guiVisible = false;
+        generateWorld();
     }   
 }
 

@@ -475,6 +475,13 @@ public class Chunk {
         }
     }
     
+    public void cleanup() {
+        glDeleteBuffers(VBOVertexHandle);
+        glDeleteBuffers(VBOColorHandle);
+        glDeleteBuffers(VBOTextureHandle);
+    }
+
+    
     public Chunk(int startX, int startY, int startZ, int seed) 
     {
 
